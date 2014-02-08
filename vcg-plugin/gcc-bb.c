@@ -15,19 +15,11 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-#include <stddef.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <ctype.h>
-
-#include "gcc-plugin.h"
-#include "plugin.h"
-#include "plugin-version.h"
-
 #include "vcg-plugin.h"
 
-static const char *function_name;
-static char buf[32]; /* Should be enough.  */
+/* Should be enough.  */
+static char buf[512];
+
 static char **bb_graph_title;
 static char **bb_graph_label;
 static char **bb_node_title;
@@ -41,9 +33,11 @@ static int *bb_index;
 
 /* Initialize all of the names.  */
 static void
-create_names (const char *func_name, int bb_num)
+create_names (void)
 {
   int i;
+  char *func_name = (char *) current_function_name ();
+  int bb_num = n_basic_blocks;
   
   bb_graph_title = (char **) xmalloc (bb_num * sizeof (char *));
   bb_graph_label = (char **) xmalloc (bb_num * sizeof (char *));
@@ -75,9 +69,10 @@ create_names (const char *func_name, int bb_num)
 }
 
 static void
-free_names (int bb_num)
+free_names (void)
 {
   int i;
+  int bb_num = n_basic_blocks;
 
   for (i = 0; i < bb_num; i++)
     {
@@ -164,7 +159,7 @@ dump_bb_to_file (char *fname, char *list)
   parse_bb_list (list);
 
   /* Create names for graphs and nodes.  */
-  create_names (function_name, n_basic_blocks);
+  create_names ();
 
   tmp_stream = open_memstream (&tmp_buf, &tmp_buf_size);
 
@@ -192,7 +187,7 @@ dump_bb_to_file (char *fname, char *list)
   vcg_plugin_common.dump (fname, graph);
 
   /* Free names for graphs and nodes.  */
-  free_names (n_basic_blocks);
+  free_names ();
   fclose (tmp_stream);
   free (tmp_buf);
   free (bb_index);
@@ -203,37 +198,25 @@ dump_bb_to_file (char *fname, char *list)
 void
 vcg_plugin_dump_bb (char *list)
 {
-  char *fname;
+  char *fname = "dump-bb.vcg";
 
   vcg_plugin_common.init ();
-
-  /* Get the function name.  */
-  function_name = current_function_name ();
-  /* Create the dump file name.  */
-  asprintf (&fname, "dump-%s-bb.vcg", function_name);
-  vcg_plugin_common.tag (fname);
 
   dump_bb_to_file (fname, list);
 
   vcg_plugin_common.finish ();
 }
 
-/* Public function to view a gcc basic blocks.  */
+/* Public function to view basic blocks.  */
 
 void
 vcg_plugin_view_bb (char *list)
 {
-  char *fname;
+  char *fname = vcg_plugin_common.temp_file_name;
 
   vcg_plugin_common.init ();
 
-  /* Get the function name.  */
-  function_name = current_function_name ();
-  /* Get the temp file name.  */
-  fname = vcg_plugin_common.temp_file_name;
-
   dump_bb_to_file (fname, list);
-
   vcg_plugin_common.show (fname);
 
   vcg_plugin_common.finish ();

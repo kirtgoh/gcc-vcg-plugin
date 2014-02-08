@@ -4,32 +4,32 @@ define view-bb
   call vcg_plugin_view_bb ("$arg0")
 end
 document view-bb
-Usage: view-bb index
-View the basic block which is specified by index.
+Usage: view-bb [int INDEX]
+View the basic block which is specified by INDEX.
 end
 
 define dump-bb
   call vcg_plugin_dump_bb ("$arg0")
 end
 document dump-bb
-Usage: dump-bb index
-Dump the basic block which is specified by index.
+Usage: dump-bb [int INDEX]
+Dump the basic block which is specified by INDEX.
 end
 
 define view-bbs
   call vcg_plugin_view_bb ($arg0)
 end
 document view-bbs
-Usage: view-bbs "index string"
-View the basic blocks which are specified by index string.
+Usage: view-bbs [string INDEX_STRING]
+View the basic blocks which are specified by INDEX_STRING.
 end
 
 define dump-bbs
   call vcg_plugin_dump_bb ($arg0)
 end
 document dump-bbs
-Usage: dump-bb "index string"
-Dump the basic blocks which are specified by index string.
+Usage: dump-bbs [string INDEX_STRING]
+Dump the basic blocks which are specified by INDEX_STRING.
 end
 
 define view-dominance
@@ -96,20 +96,36 @@ Usage: dump-gimple-hierarchy
 Dump the graph of gcc gimple statement structure hierarchy.
 end
 
+define view-loop
+  call vcg_plugin_view_loop ($arg0)
+end
+document view-loop
+Usage: view-loop [int LOOP_ID]
+View the graph of loop.
+end
+
+define dump-loop
+  call vcg_plugin_dump_loop ($arg0)
+end
+document dump-loop
+Usage: dump-loop [int LOOP_ID]
+Dump the graph of loop.
+end
+
 define view-passes
-  call vcg_plugin_view_passes ($arg0)
+  call vcg_plugin_view_passes ()
 end
 document view-passes
-Usage: view-passes [struct opt_pass * PASS]
-View the graph of gcc pass lists. If PASS exists, then show the PASS in red color.
+Usage: view-passes
+View the graph of gcc pass lists. If current_pass exists, then show the it in red color.
 end
 
 define dump-passes
-  call vcg_plugin_dump_passes ($arg0)
+  call vcg_plugin_dump_passes ()
 end
 document dump-passes
-Usage: dump-passes [struct opt_pass * PASS]
-Dump the graph of gcc pass lists. If PASS exists, then show the PASS in red color.
+Usage: dump-passes
+Dump the graph of gcc pass lists. If current_pass exists, then show the it in red color.
 end
 
 define view-rtx

@@ -15,37 +15,11 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include <config.h>
-
-#include <stddef.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-
-#include "gcc-plugin.h"
-#include "plugin.h"
-#include "plugin-version.h"
-
-#include "system.h"
-#include "coretypes.h"
-#include "tm.h"
-#include "toplev.h"
-#include "gimple.h"
-#include "tree-pass.h"
-#include "intl.h"
-#include "langhooks.h"
-#include "cfghooks.h"
-
-#include "libiberty.h"
 #include "vcg-plugin.h"
-#include "gdl.h"
 
 static struct obstack str_obstack;
 
 static void vcg_error (const char *format, ...);
-static char *vcg_get_file_name (bool is_temp);
 static void vcg_dump (char *fname, gdl_graph *graph);
 static void vcg_show (char *fname);
 
@@ -59,28 +33,6 @@ vcg_error (const char *format, ...)
   vfprintf (stderr,  format, ap);
   va_end (ap);
   fputc ('\n', stderr);
-}
-
-/* Return the dump file name which is going to be used.  Return NULL if there
-   is error.  IS_TEMP is true if we want a temp file.  */
-static char *
-vcg_get_file_name (bool is_temp)
-{
-  char *str;
-  static unsigned int file_number = 0;
-
-  if (is_temp)
-    {
-      str = "dump-temp.vcg";
-    }
-  else
-    {
-      if (asprintf (&str, "dump-%03d.vcg", file_number) < 0)
-        return NULL;
-
-      file_number++;
-    }
-  return str;
 }
 
 /* Dump GRAPH into file.  If FP is NULL, then create a new file.  */
@@ -138,7 +90,6 @@ static void
 vcg_init (void)
 {
   gdl_graph *graph;
-  gdl_node *node;
 
   malloc_str.str = NULL;
   malloc_str.next = NULL;  
@@ -152,11 +103,6 @@ vcg_init (void)
   gdl_set_graph_node_textcolor (graph, "white");
   gdl_set_graph_node_color (graph, "100");
   gdl_set_graph_edge_color (graph, "100");
-
-//  node = gdl_new_node ("info");
-//  gdl_set_node_label (node, vcg_plugin_common.info);
-//  gdl_set_node_borderwidth (node, 1);
-//  gdl_add_node (graph, node);
 
   vcg_plugin_common.top_graph = graph;
 
@@ -214,7 +160,7 @@ vcg_buf_finish (void)
 vcg_plugin_common_t vcg_plugin_common =
 {
   "VCG Plugin",
-  "1.2",
+  "1.3",
   "",
   "vcgview",
   "dump-temp.vcg",

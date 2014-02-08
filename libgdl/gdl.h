@@ -260,14 +260,14 @@ extern void gdl_set_graph_edge_color (gdl_graph *graph, char *value);
 extern void gdl_set_graph_edge_thickness (gdl_graph *graph, int value);
 extern void gdl_set_edge_type (gdl_edge *edge, gdl_edge_type type);
 
-extern gdl_graph *gdl_new_graph (const char *title); 
-extern gdl_node *gdl_new_node (const char *title);
-extern gdl_node *gdl_new_graph_node (gdl_graph *graph, const char *title);
-extern gdl_edge *gdl_new_edge (const char *source, const char *target);
+extern gdl_graph *gdl_new_graph (char *title); 
+extern gdl_node *gdl_new_node (char *title);
+extern gdl_node *gdl_new_graph_node (gdl_graph *graph, char *title);
+extern gdl_edge *gdl_new_edge (char *source, char *target);
 extern gdl_edge *gdl_new_graph_edge (gdl_graph *graph,
-                                     const char *source, const char *target);
-extern gdl_graph *gdl_new_graph (const char *title); 
-extern gdl_graph *gdl_new_graph_subgraph (gdl_graph *graph, const char *title); 
+                                     char *source, char *target);
+extern gdl_graph *gdl_new_graph (char *title); 
+extern gdl_graph *gdl_new_graph_subgraph (gdl_graph *graph, char *title); 
 
 extern void gdl_free_node (gdl_node *node);
 extern void gdl_free_edge (gdl_edge *edge);

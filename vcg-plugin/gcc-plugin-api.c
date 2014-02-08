@@ -15,30 +15,7 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
-#include <config.h>
-
-#include <stddef.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-
-#include "gcc-plugin.h"
-#include "plugin.h"
-#include "plugin-version.h"
-
-#include "system.h"
-#include "coretypes.h"
-#include "tm.h"
-#include "toplev.h"
-#include "gimple.h"
-#include "tree-pass.h"
-#include "intl.h"
-#include "langhooks.h"
-#include "cfghooks.h"
-
 #include "vcg-plugin.h"
-#include "gdl.h"
 
 /* plugin license check */
 int plugin_is_GPL_compatible;

@@ -18,18 +18,25 @@
 #ifndef VCG_PLUGIN_H
 #define VCG_PLUGIN_H
 
+/* GNU extensions, asprintf */
+#define _GNU_SOURCE
+
+#include <stddef.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <ctype.h>
+
 /* gcc's header files */
 
-#include "system.h"
-#include "coretypes.h"
-#include "tm.h"
-#include "toplev.h"
+#include "gcc-plugin.h"
+#include "plugin.h"
+#include "plugin-version.h"
+
 #include "gimple.h"
 #include "tree-pass.h"
-#include "rtl.h"
-#include "intl.h"
-#include "langhooks.h"
-#include "cfghooks.h"
+#include "cfgloop.h"
+#include "cgraph.h"
 
 /* libgdl */
 #include "gdl.h"
@@ -57,8 +64,14 @@ extern vcg_plugin_common_t vcg_plugin_common;
 /* These are available functins, which can be used to
    dump and view gcc internal data structures. */
 
+extern void vcg_plugin_dump_bb (char *list);
+extern void vcg_plugin_view_bb (char *list);
+
 extern void vcg_plugin_dump_cgraph (void);
 extern void vcg_plugin_view_cgraph (void);
+
+extern void vcg_plugin_dump_dominance (void);
+extern void vcg_plugin_view_dominance (void);
 
 extern void vcg_plugin_dump_function (void); 
 extern void vcg_plugin_view_function (void); 
@@ -66,8 +79,14 @@ extern void vcg_plugin_view_function (void);
 extern void vcg_plugin_dump_gimple_hierarchy (void);
 extern void vcg_plugin_view_gimple_hierarchy (void);
 
-extern void vcg_plugin_dump_passes (struct opt_pass *pass);
-extern void vcg_plugin_view_passes (struct opt_pass *pass);
+extern void vcg_plugin_dump_loop (unsigned loop_id);
+extern void vcg_plugin_view_loop (unsigned loop_id);
+
+extern void vcg_plugin_dump_passes (void);
+extern void vcg_plugin_view_passes (void);
+
+extern void vcg_plugin_dump_rtx (const_rtx x);
+extern void vcg_plugin_view_rtx (const_rtx x);
 
 extern void vcg_plugin_dump_tree_hierarchy (void);
 extern void vcg_plugin_view_tree_hierarchy (void);

@@ -15,15 +15,6 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */ 
 
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "gcc-plugin.h"
-#include "plugin.h"
-#include "plugin-version.h"
-
-#include "cgraph.h"
 #include "vcg-plugin.h"
 
 static void
@@ -32,12 +23,12 @@ create_node_and_edges (gdl_graph *graph, struct cgraph_node *node)
   struct cgraph_edge *edge;
   char *title, *title_a;
 
-  title = cgraph_node_name (node);
+  title = (char *) cgraph_node_name (node);
   gdl_new_graph_node (graph, title);
 
   for (edge = node->callees; edge; edge = edge->next_callee)
     {
-      title_a = cgraph_node_name (edge->callee);
+      title_a = (char *) cgraph_node_name (edge->callee);
       if (gdl_find_edge (graph, title, title_a))
         continue;
       gdl_new_graph_edge (graph, title, title_a);
@@ -68,7 +59,6 @@ vcg_plugin_dump_cgraph (void)
 
   vcg_plugin_common.init ();
 
-  /* Create the dump file name.  */
   dump_cgraph_to_file (fname);
 
   vcg_plugin_common.finish ();
@@ -79,12 +69,10 @@ vcg_plugin_dump_cgraph (void)
 void
 vcg_plugin_view_cgraph (void)
 {
-  char *fname;
+  char *fname = vcg_plugin_common.temp_file_name;
 
   vcg_plugin_common.init ();
 
-  /* Get the temp file name.  */
-  fname = vcg_plugin_common.temp_file_name;
   dump_cgraph_to_file (fname);
   vcg_plugin_common.show (fname);
 

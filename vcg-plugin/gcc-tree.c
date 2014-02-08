@@ -15,14 +15,6 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */ 
 
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "gcc-plugin.h"
-#include "plugin.h"
-#include "plugin-version.h"
-
 #include "vcg-plugin.h"
 
 static const char *ts_names[] = {
@@ -102,8 +94,7 @@ create_common_node (gdl_graph *graph, void *common,
                     enum tree_node_structure_enum tns, int nested_level)
 {
   gdl_node *node, *anode;
-  char buf[256];
-  char *title, *label;
+  char *label;
 
   if (common == NULL)
     return NULL;
@@ -236,6 +227,7 @@ create_common_node (gdl_graph *graph, void *common,
     case TS_OMP_CLAUSE:
     case TS_OPTIMIZATION:
     case TS_TARGET_OPTION:
+    case LAST_TS_ENUM:
       abort ();
       break;
     }
@@ -252,7 +244,7 @@ create_tree_node (gdl_graph *graph, tree tn, char *name, int nested_level)
   gdl_node *node, *anode;
   enum tree_node_structure_enum tns;
   char buf[256];
-  char *title, *label;
+  char *label;
   void **slot;
   int i;
 
@@ -700,6 +692,8 @@ create_tree_node (gdl_graph *graph, tree tn, char *name, int nested_level)
       create_dashed_edge (graph, node, anode);
       #undef tx
       break;
+    case LAST_TS_ENUM:
+      abort ();
     }
   return node;
 }
@@ -725,12 +719,10 @@ dump_tree_to_file (char *fname, tree node)
 void
 vcg_plugin_dump_tree (tree node)
 {
-  char *fname;
+  char *fname = "dump-tree.vcg";
 
   vcg_plugin_common.init ();
 
-  /* Create the dump file name.  */
-  asprintf (&fname, "dump-tree-%#x.vcg", node);
   vcg_plugin_common.tag (fname);
   dump_tree_to_file (fname, node);
 
@@ -742,12 +734,10 @@ vcg_plugin_dump_tree (tree node)
 void
 vcg_plugin_view_tree (tree node)
 {
-  char *fname;
+  char *fname = vcg_plugin_common.temp_file_name;
 
   vcg_plugin_common.init ();
 
-  /* Get the temp file name.  */
-  fname = vcg_plugin_common.temp_file_name;
   dump_tree_to_file (fname, node);
   vcg_plugin_common.show (fname);
 

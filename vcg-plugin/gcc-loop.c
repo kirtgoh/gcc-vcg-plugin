@@ -1,6 +1,6 @@
-/* Dump or view gcc function.
+/* Dump or view gcc loop.
  
-   Copyright (C) 2010, 2011 Mingjie Xing, mingjie.xing@gmail.com.
+   Copyright (C) 2011 Mingjie Xing, mingjie.xing@gmail.com.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -17,23 +17,27 @@
 
 #include "vcg-plugin.h"
 
-static char buf[32]; /* Should be enough.  */
+/* Should be enough.  */
+static char buf[512];
+
 static char **bb_graph_title;
 static char **bb_graph_label;
 static char **bb_node_title;
 
 /* Temp file stream, used to get the bb dump from gcc dump function. */
+
 static FILE *tmp_stream;
 static char *tmp_buf;
 static size_t tmp_buf_size;
 
 /* Initialize all of the names.  */
+
 static void
 create_names (void)
 {
   int i;
+  char *func_name = (char *) current_function_name ();
   int bb_num = n_basic_blocks;
-  const char *func_name = current_function_name ();
   
   bb_graph_title = (char **) xmalloc (bb_num * sizeof (char *));
   bb_graph_label = (char **) xmalloc (bb_num * sizeof (char *));
@@ -65,9 +69,10 @@ create_names (void)
 }
 
 static void
-free_names (int bb_num)
+free_names (void)
 {
   int i;
+  int bb_num = n_basic_blocks;
 
   for (i = 0; i < bb_num; i++)
     {
@@ -108,9 +113,12 @@ create_bb_graph (basic_block bb)
   return g;
 }
 
+/* Dump the loop into the file.  */
+
 static void
-dump_function_to_file (char *fname)
+dump_loop_to_file (char *fname, int loop_id)
 {
+  struct loop *loop = get_loop (loop_id);
   basic_block bb;
   edge e;
   edge_iterator ei;
@@ -118,7 +126,6 @@ dump_function_to_file (char *fname)
   gdl_graph *graph, *bb_graph;
   gdl_edge *edge;
 
-  /* Create names for graphs and nodes.  */
   create_names ();
 
   tmp_stream = open_memstream (&tmp_buf, &tmp_buf_size);
@@ -128,51 +135,60 @@ dump_function_to_file (char *fname)
   mark_dfs_back_edges ();
 
   FOR_ALL_BB (bb)
-    {
-      bb_graph = create_bb_graph (bb);
-      gdl_add_subgraph (graph, bb_graph);
+    if (flow_bb_inside_loop_p (loop, bb))
+      {
+        bb_graph = create_bb_graph (bb);
+        gdl_add_subgraph (graph, bb_graph);
 
-      FOR_EACH_EDGE (e, ei, bb->succs)
-        {
-          edge = gdl_new_graph_edge (graph, bb_graph_title[e->src->index],
-                              bb_graph_title[e->dest->index]);
+        FOR_EACH_EDGE (e, ei, bb->succs)
+          if (flow_bb_inside_loop_p (loop, e->dest))
+            {
+              edge = gdl_new_graph_edge (graph,
+                                         bb_graph_title[e->src->index],
+                                         bb_graph_title[e->dest->index]);
               if (e->flags & EDGE_DFS_BACK)
                 gdl_set_edge_type (edge, GDL_BACKEDGE);
-        }
-    }
+            }
+      }
 
   vcg_plugin_common.dump (fname, graph);
 
   /* Free names for graphs and nodes.  */
-  free_names (n_basic_blocks);
+  free_names ();
   fclose (tmp_stream);
   free (tmp_buf);
 }
 
-/* Public function to dump a gcc function FN.  */
+/* Public function to dump a loop.  */
 
 void
-vcg_plugin_dump_function (void)
+vcg_plugin_dump_loop (unsigned loop_id)
 {
-  char *fname = "dump-function.vcg";
+  char *fname = "dump-loop.vcg";
+
+  if (loop_id >= number_of_loops ())
+    return;
 
   vcg_plugin_common.init ();
 
-  dump_function_to_file (fname);
+  dump_loop_to_file (fname, loop_id);
 
   vcg_plugin_common.finish ();
 }
 
-/* Public function to view a gcc function FN.  */
+/* Public function to view a loop.  */
 
 void
-vcg_plugin_view_function (void)
+vcg_plugin_view_loop (unsigned loop_id)
 {
   char *fname = vcg_plugin_common.temp_file_name;
 
+  if (loop_id >= number_of_loops ())
+    return;
+
   vcg_plugin_common.init ();
 
-  dump_function_to_file (fname);
+  dump_loop_to_file (fname, loop_id);
   vcg_plugin_common.show (fname);
 
   vcg_plugin_common.finish ();

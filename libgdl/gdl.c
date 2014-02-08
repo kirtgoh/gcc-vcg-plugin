@@ -32,7 +32,7 @@ static char buf[512];
 /* Create a node for a given TITLE.  */
 
 gdl_node *
-gdl_new_node (const char *title)
+gdl_new_node (char *title)
 {
   gdl_node *node;
 
@@ -54,7 +54,7 @@ gdl_new_node (const char *title)
 }
 
 gdl_node *
-gdl_new_graph_node (gdl_graph *graph, const char *title)
+gdl_new_graph_node (gdl_graph *graph, char *title)
 {
   gdl_node *node;
 
@@ -69,7 +69,7 @@ gdl_new_graph_node (gdl_graph *graph, const char *title)
 /* Create an edge for a given SOURCE and TARGET.  */
 
 gdl_edge *
-gdl_new_edge (const char *source, const char *target)
+gdl_new_edge (char *source, char *target)
 {
   gdl_edge *edge;
 
@@ -87,7 +87,7 @@ gdl_new_edge (const char *source, const char *target)
 }
 
 gdl_edge *
-gdl_new_graph_edge (gdl_graph *graph, const char *source, const char *target)
+gdl_new_graph_edge (gdl_graph *graph, char *source, char *target)
 {
   gdl_edge *edge;
 
@@ -102,7 +102,7 @@ gdl_new_graph_edge (gdl_graph *graph, const char *source, const char *target)
 /* Create a graph for a given TITLE.  */
 
 gdl_graph *
-gdl_new_graph (const char *title)
+gdl_new_graph (char *title)
 {
   gdl_graph *graph;
 
@@ -131,7 +131,7 @@ gdl_new_graph (const char *title)
 }
 
 gdl_graph *
-gdl_new_graph_subgraph (gdl_graph *graph, const char *title)
+gdl_new_graph_subgraph (gdl_graph *graph, char *title)
 {
   gdl_graph *subgraph;
 
@@ -309,7 +309,7 @@ gdl_find_subgraph (gdl_graph *graph, char *title)
 /* Print the string into the file and add a '\' before each '"'.  */
 
 static inline void
-print_string (FILE *fout, const char *str)
+print_string (FILE *fout, char *str)
 {
   int i;
 

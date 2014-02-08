@@ -15,15 +15,6 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */ 
 
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
-
-#include "gcc-plugin.h"
-#include "plugin.h"
-#include "plugin-version.h"
-
 #include "vcg-plugin.h"
 
 /* Temp file stream, used to get the rtx dump. */
@@ -53,12 +44,11 @@ create_rtx_node (gdl_graph *graph, const_rtx x)
   const char *str;
   int value;
   rtx sub;
-  enum rtx_code subc;
   basic_block bb;
   tree tn;
 
   if (x == 0)
-    return;
+    return NULL;
 
   node = gdl_new_graph_node (graph, NULL);
 
@@ -98,7 +88,7 @@ create_rtx_node (gdl_graph *graph, const_rtx x)
         node_x = gdl_new_graph_node (graph, NULL);
         if (str == 0)
           str = "";
-        gdl_set_node_label (node_x, str);
+        gdl_set_node_label (node_x, (char *) str);
         gdl_set_node_horizontal_order (node_x, i + 1);
         gdl_new_graph_edge (graph, gdl_get_node_title (node),
                             gdl_get_node_title (node_x));
@@ -320,13 +310,10 @@ dump_rtx_to_file (char *fname, const_rtx x)
 void
 vcg_plugin_dump_rtx (const_rtx x)
 {
-  char *fname;
+  char *fname = "dump-rtx.vcg";
 
   vcg_plugin_common.init ();
 
-  /* Create the dump file name.  */
-  asprintf (&fname, "dump-rtx-%#x.vcg", x);
-  vcg_plugin_common.tag (fname);
   dump_rtx_to_file (fname, x);
 
   vcg_plugin_common.finish ();
@@ -337,12 +324,10 @@ vcg_plugin_dump_rtx (const_rtx x)
 void
 vcg_plugin_view_rtx (const_rtx x)
 {
-  char *fname;
+  char *fname = vcg_plugin_common.temp_file_name;
 
   vcg_plugin_common.init ();
 
-  /* Get the temp file name.  */
-  fname = vcg_plugin_common.temp_file_name;
   dump_rtx_to_file (fname, x);
   vcg_plugin_common.show (fname);
 

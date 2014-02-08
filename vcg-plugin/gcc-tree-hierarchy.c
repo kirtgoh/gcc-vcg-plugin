@@ -15,14 +15,6 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */ 
 
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "gcc-plugin.h"
-#include "plugin.h"
-#include "plugin-version.h"
-
 #include "vcg-plugin.h"
 
 static void
@@ -134,12 +126,10 @@ vcg_plugin_dump_tree_hierarchy (void)
 void
 vcg_plugin_view_tree_hierarchy (void)
 {
-  char *fname;
+  char *fname = vcg_plugin_common.temp_file_name;
 
   vcg_plugin_common.init ();
 
-  /* Get the temp file name.  */
-  fname = vcg_plugin_common.temp_file_name;
   dump_tree_hierarchy_to_file (fname);
   vcg_plugin_common.show (fname);
 

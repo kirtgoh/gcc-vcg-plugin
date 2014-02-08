@@ -15,14 +15,6 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */ 
 
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "gcc-plugin.h"
-#include "plugin.h"
-#include "plugin-version.h"
-
 #include "vcg-plugin.h"
 
 /* Dump dominance graph into the file FNAME.  */
@@ -64,7 +56,6 @@ vcg_plugin_dump_dominance (void)
 
   vcg_plugin_common.init ();
 
-  /* Create the dump file name.  */
   dump_dominance_to_file (fname);
 
   vcg_plugin_common.finish ();
@@ -75,12 +66,10 @@ vcg_plugin_dump_dominance (void)
 void
 vcg_plugin_view_dominance (void)
 {
-  char *fname;
+  char *fname = vcg_plugin_common.temp_file_name;
 
   vcg_plugin_common.init ();
 
-  /* Get the temp file name.  */
-  fname = vcg_plugin_common.temp_file_name;
   dump_dominance_to_file (fname);
   vcg_plugin_common.show (fname);
 
