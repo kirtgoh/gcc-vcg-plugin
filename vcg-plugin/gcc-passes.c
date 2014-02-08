@@ -52,16 +52,11 @@ check_this_pass (struct opt_pass *pass, gdl_node *node)
 static void
 try_create_edge (gdl_graph *graph, gdl_node *src, gdl_node *dest)
 {
-  gdl_edge *edge;
-  char *src_title, *dest_title;
-
   if (src == NULL)
     return;
 
-  src_title = gdl_get_node_title (src);
-  dest_title = gdl_get_node_title (dest);
-  edge = gdl_new_edge (src_title, dest_title);
-  gdl_add_edge (graph, edge);
+  gdl_new_graph_edge (graph, gdl_get_node_title (src),
+                      gdl_get_node_title (dest));
 } 
 
 static gdl_node *

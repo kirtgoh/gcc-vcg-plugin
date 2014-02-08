@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 AC_PREREQ(2.59)
-AC_INIT(gcc-vcg-plugin, 1.0, mingjie.xing@gmail.com)
+AC_INIT(gcc-vcg-plugin, 1.1, mingjie.xing@gmail.com)
 AC_CONFIG_HEADERS(config.h)
 
 # m4

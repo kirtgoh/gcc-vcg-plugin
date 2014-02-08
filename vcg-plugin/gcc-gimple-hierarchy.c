@@ -30,15 +30,13 @@ dump_gimple_hierarchy_to_file (char *fname)
 {
   gdl_graph *graph;
   gdl_node *node;
-  gdl_edge *edge;
 
   graph = vcg_plugin_common.top_graph;
   gdl_set_graph_orientation (graph, "left_to_right");
 
   #define NEW_NODE(name) \
-  node = gdl_new_node (name); \
-  gdl_set_node_label (node, name); \
-  gdl_add_node (graph, node);
+  node = gdl_new_graph_node (graph, name); \
+  gdl_set_node_label (node, name);
 
   NEW_NODE ("gimple_statement_base")
   NEW_NODE ("gimple_statement_with_ops_base")
@@ -67,8 +65,7 @@ dump_gimple_hierarchy_to_file (char *fname)
   NEW_NODE ("gimple_statement_omp_atomic_store")
 
   #define NEW_EDGE(src, dest) \
-  edge = gdl_new_edge (src, dest); \
-  gdl_add_edge (graph, edge);
+  gdl_new_graph_edge (graph, src, dest);
 
   NEW_EDGE ("gimple_statement_base", "gimple_statement_with_ops_base")
   NEW_EDGE ("gimple_statement_with_ops_base", "gimple_statement_with_ops")

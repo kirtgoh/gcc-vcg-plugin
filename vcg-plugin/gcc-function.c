@@ -32,9 +32,9 @@ static char **bb_graph_label;
 static char **bb_node_title;
 
 /* Temp file stream, used to get the bb dump from gcc dump function. */
-FILE *tmp_stream;
-char *tmp_buf;
-size_t tmp_buf_size;
+static FILE *tmp_stream;
+static char *tmp_buf;
+static size_t tmp_buf_size;
 
 /* Initialize all of the names.  */
 static void
@@ -109,9 +109,8 @@ create_bb_graph (basic_block bb)
   i = tmp_buf_size;
   while (i > 1 && ISSPACE (tmp_buf[i - 1])) i--;
   str = xstrndup (tmp_buf, i);
-  n = gdl_new_node (bb_node_title[bb->index]);
+  n = gdl_new_graph_node (g, bb_node_title[bb->index]);
   gdl_set_node_label (n, str);
-  gdl_add_node (g, n);
 
   return g;
 }
@@ -185,7 +184,6 @@ dump_function_to_file (char *fname, tree fn)
   edge_iterator ei;
 
   gdl_graph *graph, *bb_graph;
-  gdl_edge *v_edge;
 
   /* Switch CFUN to point to FN.  */
   push_cfun (DECL_STRUCT_FUNCTION (fn));
@@ -204,9 +202,8 @@ dump_function_to_file (char *fname, tree fn)
 
       FOR_EACH_EDGE (e, ei, bb->succs)
         {
-          v_edge = gdl_new_edge (bb_graph_title[e->src->index],
-                                 bb_graph_title[e->dest->index]);
-          gdl_add_edge (graph, v_edge);
+          gdl_new_graph_edge (graph, bb_graph_title[e->src->index],
+                              bb_graph_title[e->dest->index]);
         }
     }
 

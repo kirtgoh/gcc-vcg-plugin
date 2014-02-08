@@ -26,11 +26,13 @@ pkglib_LTLIBRARIES = vcg-plugin.la
 EXTRA_DIST = vcg-plugin.gdbinit
 
 vcg_plugin_la_SOURCES = \
+	gcc-dominance.c \
 	gcc-cgraph.c \
 	gcc-function.c \
 	gcc-gimple-hierarchy.c \
 	gcc-passes.c \
 	gcc-plugin-api.c \
+	gcc-rtx.c \
 	gcc-tree.c \
 	gcc-tree-hierarchy.c \
         vcg-plugin.c vcg-plugin.h

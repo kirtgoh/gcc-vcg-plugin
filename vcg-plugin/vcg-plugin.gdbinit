@@ -1,5 +1,21 @@
 # Define vcg plugin commands used in gdb. #
 
+define view-dominance
+  call vcg_plugin_view_dominance ()
+end
+document view-dominance
+Usage: view-dominance
+View the current dominance graph.
+end
+
+define dump-dominance
+  call vcg_plugin_dump_dominance ()
+end
+document dump-dominance
+Usage: dump-dominance
+Dump the current dominance graph.
+end
+
 define view-cgraph
   call vcg_plugin_view_cgraph ()
 end
@@ -62,6 +78,22 @@ end
 document dump-passes
 Usage: dump-passes [struct opt_pass * PASS]
 Dump the graph of gcc pass lists. If PASS exists, then show the PASS in red color.
+end
+
+define view-rtx
+  call vcg_plugin_view_rtx ($arg0)
+end
+document view-rtx
+Usage: view-rtx [rtx RTX]
+View the graph of RTX.
+end
+
+define dump-rtx
+  call vcg_plugin_dump_rtx ($arg0)
+end
+document dump-rtx
+Usage: dump-rtx [rtx RTX]
+Dump the graph of RTX.
 end
 
 define view-tree

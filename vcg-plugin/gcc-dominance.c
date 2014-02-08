@@ -1,4 +1,4 @@
-/* Dump or view gcc call graph.
+/* Dump or view gcc dominance graph.
 
    Copyright (C) 2010, 2011 Mingjie Xing, mingjie.xing@gmail.com.
 
@@ -23,61 +23,57 @@
 #include "plugin.h"
 #include "plugin-version.h"
 
-#include "cgraph.h"
 #include "vcg-plugin.h"
 
-static void
-create_node_and_edges (gdl_graph *graph, struct cgraph_node *node)
-{
-  struct cgraph_edge *edge;
-  char *title, *title_a;
-
-  title = cgraph_node_name (node);
-  gdl_new_graph_node (graph, title);
-
-  for (edge = node->callees; edge; edge = edge->next_callee)
-    {
-      title_a = cgraph_node_name (edge->callee);
-      if (gdl_find_edge (graph, title, title_a))
-        continue;
-      gdl_new_graph_edge (graph, title, title_a);
-    }
-}
-
-/* Dump call graph into the file FNAME.  */
+/* Dump dominance graph into the file FNAME.  */
 
 static void
-dump_cgraph_to_file (char *fname)
+dump_dominance_to_file (char *fname)
 {
   gdl_graph *graph;
-  struct cgraph_node *node;
+  basic_block bb, bb2;
+  char buf[32];
+  char buf2[32];
 
   graph = vcg_plugin_common.top_graph;
-  for (node = cgraph_nodes; node; node = node->next)
-    create_node_and_edges (graph, node);
+
+  FOR_EACH_BB (bb)
+    if ((bb2 = get_immediate_dominator (1, bb)))
+      {
+        sprintf (buf, "bb %d", bb->index);
+        sprintf (buf2, "bb %d", bb2->index);
+
+        if (!gdl_find_node (graph, buf))
+          gdl_new_graph_node (graph, buf);
+
+        if (!gdl_find_node (graph, buf2))
+          gdl_new_graph_node (graph, buf2);
+
+        gdl_new_graph_edge (graph, buf2, buf);
+      }
 
   vcg_plugin_common.dump (fname, graph);
 }
 
-/* Public function to dump call graph.  */
+/* Public function to dump dominance graph.  */
 
 void
-vcg_plugin_dump_cgraph (void)
+vcg_plugin_dump_dominance (void)
 {
-  char *fname = "dump-cgraph.vcg";
+  char *fname = "dump-dominance.vcg";
 
   vcg_plugin_common.init ();
 
   /* Create the dump file name.  */
-  dump_cgraph_to_file (fname);
+  dump_dominance_to_file (fname);
 
   vcg_plugin_common.finish ();
 }
 
-/* Public function to view call graph.  */
+/* Public function to view dominance graph.  */
 
 void
-vcg_plugin_view_cgraph (void)
+vcg_plugin_view_dominance (void)
 {
   char *fname;
 
@@ -85,7 +81,7 @@ vcg_plugin_view_cgraph (void)
 
   /* Get the temp file name.  */
   fname = vcg_plugin_common.temp_file_name;
-  dump_cgraph_to_file (fname);
+  dump_dominance_to_file (fname);
   vcg_plugin_common.show (fname);
 
   vcg_plugin_common.finish ();

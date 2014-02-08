@@ -42,6 +42,8 @@
 #include "vcg-plugin.h"
 #include "gdl.h"
 
+static struct obstack str_obstack;
+
 static void vcg_error (const char *format, ...);
 static char *vcg_get_file_name (bool is_temp);
 static void vcg_dump (char *fname, gdl_graph *graph);
@@ -157,6 +159,8 @@ vcg_init (void)
 //  gdl_add_node (graph, node);
 
   vcg_plugin_common.top_graph = graph;
+
+  obstack_init (&str_obstack);
 }
 
 static void
@@ -184,6 +188,27 @@ vcg_finish (void)
       //free (current_malloc_str);
     }
   gdl_free_graph (vcg_plugin_common.top_graph);
+
+  obstack_free (&str_obstack, NULL);
+}
+
+static void
+vcg_buf_print (char *fmt, ...)
+{
+  va_list ap;
+  char buf[256];
+
+  va_start (ap, fmt);
+  vsprintf (buf, fmt, ap);
+  va_end (ap);
+  obstack_grow (&str_obstack, buf, strlen (buf));
+}
+
+static char *
+vcg_buf_finish (void)
+{
+  obstack_1grow (&str_obstack, '\0');
+  return obstack_finish (&str_obstack);
 }
 
 vcg_plugin_common_t vcg_plugin_common =
@@ -195,9 +220,11 @@ vcg_plugin_common_t vcg_plugin_common =
   "dump-temp.vcg",
   NULL,
   vcg_init,
-  vcg_tag,
   vcg_finish,
   vcg_error,
   vcg_dump,
-  vcg_show
+  vcg_show,
+  vcg_tag,
+  vcg_buf_print,
+  vcg_buf_finish
 };

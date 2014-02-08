@@ -66,7 +66,7 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 LTLIBRARIES = $(noinst_LTLIBRARIES)
 libgdl_la_LIBADD =
-am_libgdl_la_OBJECTS = gdl.lo
+am_libgdl_la_OBJECTS = gdl.lo gdl-attr.lo
 libgdl_la_OBJECTS = $(am_libgdl_la_OBJECTS)
 libgdl_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
@@ -207,7 +207,7 @@ GCCPLUGINS_DIR = `gcc -print-file-name=plugin`
 INCLUDES = -I $(GCCPLUGINS_DIR)/include
 AM_CFLAGS = -Wall
 libgdl_la_SOURCES = \
-        gdl.c gdl.h
+        gdl.c gdl.h gdl-attr.c
 
 libgdl_la_LDFLAGS = -lc -liberty
 all: all-am
@@ -262,6 +262,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdl-attr.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gdl.Plo@am__quote@
 
 .c.o:
