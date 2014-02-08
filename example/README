@@ -1,0 +1,18 @@
+Here is the example of using vcg plugin in gdb.
+
+$ gdb -q -args /path/to/cc1 -O3 -fplugin=/path/to/vcg-plugin.so foo.c
+(gdb) so /path/to/vcg-plugin.gdbinit
+(gdb) b build_cgraph_edges
+(gdb) r
+(gdb) view-gimple-hierarchy 
+(gdb) view-tree-hierarchy 
+(gdb) view-function current_function_decl 
+(gdb) view-tree current_function_decl 
+(gdb) view-cgraph 
+(gdb) view-passes current_pass
+(gdb) dump-gimple-hierarchy 
+(gdb) dump-tree-hierarchy 
+(gdb) dump-function current_function_decl 
+(gdb) dump-tree current_function_decl 
+(gdb) dump-cgraph 
+(gdb) dump-passes current_pass

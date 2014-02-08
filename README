@@ -1,0 +1,53 @@
+# This package includes a gcc plugin, which can be loaded when debugging gcc,
+# to show internal structures graphically.
+#
+# Copyright (C) 2009, 2010, 2011 Mingjie Xing, mingjie.xing@gmail.com. 
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+##########
+# Source #
+##########
+
+The source code can be downloaded from http://code.google.com/p/gcc-vcg-plugin.
+
+###########
+# Install #
+###########
+
+The plugin requires gcc-4.5.0 version or later, which supports the plugin features. To install it, run the following commands,
+
+mkdir build-vcg-plugin 
+cd build-vcg-plugin
+/path/to/gcc-vcg-plugin/configure --prefix=/path/to/install
+make
+make install
+
+#########
+# Usage #
+#########
+
+First, a vcg viewer tool is required. See http://code.google.com/p/vcgviewer. 
+
+The pre-defined vcg plugin commands can be used. Rename file "vcg-plugin.gdbinit" to ".gdbinit" or add "source vcg-plugin.gdbinit" in your original ".gdbinit".
+
+You can use -fplugin-arg-vcg-viewer=vcgview to select vcg viewer, default is vcgview. 
+
+There are examples in "example" directory. 
+
+##############
+# Bug report #
+##############
+
+Any suggestion or bug report are welcome.

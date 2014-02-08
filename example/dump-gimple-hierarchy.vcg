@@ -1,0 +1,202 @@
+graph: {
+node.borderwidth: 1
+edge.thickness: 1
+orientation: left_to_right
+title: "gimple hierarchy"
+node: {
+label: "gimple_statement_base"
+title: "gimple_statement_base"
+}
+node: {
+label: "gimple_statement_with_ops_base"
+title: "gimple_statement_with_ops_base"
+}
+node: {
+label: "gimple_statement_with_ops"
+title: "gimple_statement_with_ops"
+}
+node: {
+label: "gimple_statement_with_memory_ops_base"
+title: "gimple_statement_with_memory_ops_base"
+}
+node: {
+label: "gimple_statement_with_memory_ops"
+title: "gimple_statement_with_memory_ops"
+}
+node: {
+label: "gimple_statement_call"
+title: "gimple_statement_call"
+}
+node: {
+label: "gimple_statement_omp"
+title: "gimple_statement_omp"
+}
+node: {
+label: "gimple_statement_bind"
+title: "gimple_statement_bind"
+}
+node: {
+label: "gimple_statement_catch"
+title: "gimple_statement_catch"
+}
+node: {
+label: "gimple_statement_eh_filter"
+title: "gimple_statement_eh_filter"
+}
+node: {
+label: "gimple_statement_eh_mnt"
+title: "gimple_statement_eh_mnt"
+}
+node: {
+label: "gimple_statement_phi"
+title: "gimple_statement_phi"
+}
+node: {
+label: "gimple_statement_eh_ctrl"
+title: "gimple_statement_eh_ctrl"
+}
+node: {
+label: "gimple_statement_try"
+title: "gimple_statement_try"
+}
+node: {
+label: "gimple_statement_wce"
+title: "gimple_statement_wce"
+}
+node: {
+label: "gimple_statement_asm"
+title: "gimple_statement_asm"
+}
+node: {
+label: "gimple_statement_omp_critical"
+title: "gimple_statement_omp_critical"
+}
+node: {
+label: "gimple_statement_omp_for"
+title: "gimple_statement_omp_for"
+}
+node: {
+label: "gimple_statement_omp_parallel"
+title: "gimple_statement_omp_parallel"
+}
+node: {
+label: "gimple_statement_omp_task"
+title: "gimple_statement_omp_task"
+}
+node: {
+label: "gimple_statement_omp_sections"
+title: "gimple_statement_omp_sections"
+}
+node: {
+label: "gimple_statement_omp_single"
+title: "gimple_statement_omp_single"
+}
+node: {
+label: "gimple_statement_omp_continue"
+title: "gimple_statement_omp_continue"
+}
+node: {
+label: "gimple_statement_omp_atomic_load"
+title: "gimple_statement_omp_atomic_load"
+}
+node: {
+label: "gimple_statement_omp_atomic_store"
+title: "gimple_statement_omp_atomic_store"
+}
+edge: {
+sourcename: "gimple_statement_base"
+targetname: "gimple_statement_with_ops_base"
+}
+edge: {
+sourcename: "gimple_statement_with_ops_base"
+targetname: "gimple_statement_with_ops"
+}
+edge: {
+sourcename: "gimple_statement_with_ops_base"
+targetname: "gimple_statement_with_memory_ops_base"
+}
+edge: {
+sourcename: "gimple_statement_with_memory_ops_base"
+targetname: "gimple_statement_with_memory_ops"
+}
+edge: {
+sourcename: "gimple_statement_with_memory_ops_base"
+targetname: "gimple_statement_call"
+}
+edge: {
+sourcename: "gimple_statement_base"
+targetname: "gimple_statement_omp"
+}
+edge: {
+sourcename: "gimple_statement_base"
+targetname: "gimple_statement_bind"
+}
+edge: {
+sourcename: "gimple_statement_base"
+targetname: "gimple_statement_catch"
+}
+edge: {
+sourcename: "gimple_statement_base"
+targetname: "gimple_statement_eh_filter"
+}
+edge: {
+sourcename: "gimple_statement_base"
+targetname: "gimple_statement_eh_mnt"
+}
+edge: {
+sourcename: "gimple_statement_base"
+targetname: "gimple_statement_phi"
+}
+edge: {
+sourcename: "gimple_statement_base"
+targetname: "gimple_statement_eh_ctrl"
+}
+edge: {
+sourcename: "gimple_statement_base"
+targetname: "gimple_statement_try"
+}
+edge: {
+sourcename: "gimple_statement_base"
+targetname: "gimple_statement_wce"
+}
+edge: {
+sourcename: "gimple_statement_with_memory_ops_base"
+targetname: "gimple_statement_asm"
+}
+edge: {
+sourcename: "gimple_statement_omp"
+targetname: "gimple_statement_omp_critical"
+}
+edge: {
+sourcename: "gimple_statement_omp"
+targetname: "gimple_statement_omp_for"
+}
+edge: {
+sourcename: "gimple_statement_omp"
+targetname: "gimple_statement_omp_parallel"
+}
+edge: {
+sourcename: "gimple_statement_omp_parallel"
+targetname: "gimple_statement_omp_task"
+}
+edge: {
+sourcename: "gimple_statement_omp"
+targetname: "gimple_statement_omp_sections"
+}
+edge: {
+sourcename: "gimple_statement_base"
+targetname: "gimple_statement_omp_continue"
+}
+edge: {
+sourcename: "gimple_statement_omp"
+targetname: "gimple_statement_omp_single"
+}
+edge: {
+sourcename: "gimple_statement_base"
+targetname: "gimple_statement_omp_atomic_load"
+}
+edge: {
+sourcename: "gimple_statement_base"
+targetname: "gimple_statement_omp_atomic_store"
+}
+}

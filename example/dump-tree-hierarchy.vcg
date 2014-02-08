@@ -1,0 +1,282 @@
+graph: {
+node.borderwidth: 1
+edge.thickness: 1
+orientation: left_to_right
+title: "tree hierarchy"
+node: {
+label: "tree_base"
+title: "tree_base"
+}
+node: {
+label: "tree_common"
+title: "tree_common"
+}
+node: {
+label: "tree_int_cst"
+title: "tree_int_cst"
+}
+node: {
+label: "tree_real_cst"
+title: "tree_real_cst"
+}
+node: {
+label: "tree_fixed_cst"
+title: "tree_fixed_cst"
+}
+node: {
+label: "tree_vector"
+title: "tree_vector"
+}
+node: {
+label: "tree_string"
+title: "tree_string"
+}
+node: {
+label: "tree_complex"
+title: "tree_complex"
+}
+node: {
+label: "tree_identifier"
+title: "tree_identifier"
+}
+node: {
+label: "tree_decl_minimal"
+title: "tree_decl_minimal"
+}
+node: {
+label: "tree_decl_common"
+title: "tree_decl_common"
+}
+node: {
+label: "tree_decl_with_rtl"
+title: "tree_decl_with_rtl"
+}
+node: {
+label: "tree_decl_non_common"
+title: "tree_decl_non_common"
+}
+node: {
+label: "tree_parm_decl"
+title: "tree_parm_decl"
+}
+node: {
+label: "tree_decl_with_vis"
+title: "tree_decl_with_vis"
+}
+node: {
+label: "tree_var_decl"
+title: "tree_var_decl"
+}
+node: {
+label: "tree_field_decl"
+title: "tree_field_decl"
+}
+node: {
+label: "tree_label_decl"
+title: "tree_label_decl"
+}
+node: {
+label: "tree_result_decl"
+title: "tree_result_decl"
+}
+node: {
+label: "tree_const_decl"
+title: "tree_const_decl"
+}
+node: {
+label: "tree_type_decl"
+title: "tree_type_decl"
+}
+node: {
+label: "tree_function_decl"
+title: "tree_function_decl"
+}
+node: {
+label: "tree_translation_unit_decl"
+title: "tree_translation_unit_decl"
+}
+node: {
+label: "tree_type"
+title: "tree_type"
+}
+node: {
+label: "tree_list"
+title: "tree_list"
+}
+node: {
+label: "tree_vec"
+title: "tree_vec"
+}
+node: {
+label: "tree_exp"
+title: "tree_exp"
+}
+node: {
+label: "tree_ssa_name"
+title: "tree_ssa_name"
+}
+node: {
+label: "tree_block"
+title: "tree_block"
+}
+node: {
+label: "tree_binfo"
+title: "tree_binfo"
+}
+node: {
+label: "tree_statement_list"
+title: "tree_statement_list"
+}
+node: {
+label: "tree_constructor"
+title: "tree_constructor"
+}
+node: {
+label: "tree_omp_clause"
+title: "tree_omp_clause"
+}
+node: {
+label: "tree_optimization_option"
+title: "tree_optimization_option"
+}
+node: {
+label: "tree_target_option"
+title: "tree_target_option"
+}
+edge: {
+sourcename: "tree_base"
+targetname: "tree_common"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_int_cst"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_real_cst"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_fixed_cst"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_string"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_complex"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_vector"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_identifier"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_list"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_vec"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_constructor"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_exp"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_ssa_name"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_omp_clause"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_block"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_type"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_binfo"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_decl_minimal"
+}
+edge: {
+sourcename: "tree_decl_minimal"
+targetname: "tree_decl_common"
+}
+edge: {
+sourcename: "tree_decl_common"
+targetname: "tree_decl_with_rtl"
+}
+edge: {
+sourcename: "tree_decl_common"
+targetname: "tree_field_decl"
+}
+edge: {
+sourcename: "tree_decl_with_rtl"
+targetname: "tree_label_decl"
+}
+edge: {
+sourcename: "tree_decl_with_rtl"
+targetname: "tree_result_decl"
+}
+edge: {
+sourcename: "tree_decl_with_rtl"
+targetname: "tree_const_decl"
+}
+edge: {
+sourcename: "tree_decl_with_rtl"
+targetname: "tree_parm_decl"
+}
+edge: {
+sourcename: "tree_decl_with_rtl"
+targetname: "tree_decl_with_vis"
+}
+edge: {
+sourcename: "tree_decl_with_vis"
+targetname: "tree_var_decl"
+}
+edge: {
+sourcename: "tree_decl_with_vis"
+targetname: "tree_decl_non_common"
+}
+edge: {
+sourcename: "tree_decl_non_common"
+targetname: "tree_function_decl"
+}
+edge: {
+sourcename: "tree_decl_common"
+targetname: "tree_translation_unit_decl"
+}
+edge: {
+sourcename: "tree_decl_non_common"
+targetname: "tree_type_decl"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_statement_list"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_optimization_option"
+}
+edge: {
+sourcename: "tree_common"
+targetname: "tree_target_option"
+}
+}

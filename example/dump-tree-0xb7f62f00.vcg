@@ -1,0 +1,529 @@
+graph: {
+node.borderwidth: 1
+edge.thickness: 1
+splines: yes
+title: "tree"
+node: {
+label: "tree_function_decl
+----------
+name: tree
+addr: 0xb7f62f00
+f = 0xb7eb8478"
+title: "node.1"
+}
+node: {
+label: "tree_decl_non_common
+----------
+name: common
+addr: 0xb7f62f00"
+title: "node.2"
+}
+node: {
+label: "tree_decl_with_vis
+----------
+name: common
+addr: 0xb7f62f00"
+title: "node.3"
+}
+node: {
+label: "tree_decl_with_rtl
+----------
+name: common
+addr: 0xb7f62f00"
+title: "node.4"
+}
+node: {
+label: "tree_decl_common
+----------
+name: common
+addr: 0xb7f62f00"
+title: "node.5"
+}
+node: {
+label: "tree_decl_minimal
+----------
+name: common
+addr: 0xb7f62f00"
+title: "node.6"
+}
+node: {
+label: "tree_common
+----------
+name: common
+addr: 0xb7f62f00"
+title: "node.7"
+}
+node: {
+label: "tree_base
+----------
+name: common
+addr: 0xb7f62f00"
+title: "node.8"
+}
+node: {
+label: "tree_type
+----------
+name: type
+addr: 0xb7ec87e0"
+title: "node.9"
+}
+node: {
+label: "tree_identifier
+----------
+name: name
+addr: 0xb7f24270
+value: main"
+title: "node.10"
+}
+node: {
+label: "tree_common
+----------
+name: common
+addr: 0xb7f24270"
+title: "node.11"
+}
+node: {
+label: "tree_base
+----------
+name: common
+addr: 0xb7f24270"
+title: "node.12"
+}
+node: {
+label: "tree_translatin_unit_decl
+----------
+name: context
+addr: 0xb7f4a1b0
+language: GNU C"
+title: "node.13"
+}
+node: {
+label: "tree_decl_common
+----------
+name: common
+addr: 0xb7f4a1b0"
+title: "node.14"
+}
+node: {
+label: "tree_decl_minimal
+----------
+name: common
+addr: 0xb7f4a1b0"
+title: "node.15"
+}
+node: {
+label: "tree_common
+----------
+name: common
+addr: 0xb7f4a1b0"
+title: "node.16"
+}
+node: {
+label: "..."
+title: "node.17"
+}
+node: {
+label: "tree_block
+----------
+name: initial
+addr: 0xb7f272d8"
+title: "node.18"
+}
+node: {
+label: "tree_common
+----------
+name: common
+addr: 0xb7f272d8"
+title: "node.19"
+}
+node: {
+label: "..."
+title: "node.20"
+}
+node: {
+label: "tree_function_decl
+----------
+name: vars
+addr: 0xb7f89080
+f = 0x0"
+title: "node.21"
+}
+node: {
+label: "..."
+title: "node.22"
+}
+node: {
+label: "tree_translatin_unit_decl
+----------
+name: supercontext
+addr: 0xb7f4a1b0
+language: GNU C"
+title: "node.23"
+}
+node: {
+label: "..."
+title: "node.24"
+}
+node: {
+label: "tree_block
+----------
+name: initial
+addr: 0xb7f272a4"
+title: "node.25"
+}
+node: {
+label: "tree_common
+----------
+name: common
+addr: 0xb7f272a4"
+title: "node.26"
+}
+node: {
+label: "tree_base
+----------
+name: common
+addr: 0xb7f272a4"
+title: "node.27"
+}
+node: {
+label: "tree_var_decl
+----------
+name: vars
+addr: 0xb7f67480"
+title: "node.28"
+}
+node: {
+label: "tree_function_decl
+----------
+name: supercontext
+addr: 0xb7f62f00
+duplicated"
+title: "node.29"
+}
+node: {
+label: "tree_identifier
+----------
+name: assembler_name
+addr: 0xb7f24270
+value: main"
+title: "node.30"
+}
+node: {
+label: "tree_common
+----------
+name: common
+addr: 0xb7f24270"
+title: "node.31"
+}
+node: {
+label: "tree_base
+----------
+name: common
+addr: 0xb7f24270"
+title: "node.32"
+}
+node: {
+label: "tree_result_decl
+----------
+name: result
+addr: 0xb7f66690
+ann = 0x0"
+title: "node.33"
+}
+node: {
+label: "tree_decl_with_rtl
+----------
+name: common
+addr: 0xb7f66690"
+title: "node.34"
+}
+node: {
+label: "tree_decl_common
+----------
+name: common
+addr: 0xb7f66690"
+title: "node.35"
+}
+node: {
+label: "tree_decl_minimal
+----------
+name: common
+addr: 0xb7f66690"
+title: "node.36"
+}
+node: {
+label: "tree_common
+----------
+name: common
+addr: 0xb7f66690"
+title: "node.37"
+}
+node: {
+label: "tree_base
+----------
+name: common
+addr: 0xb7f66690"
+title: "node.38"
+}
+node: {
+label: "tree_type
+----------
+name: type
+addr: 0xb7ebd2a0"
+title: "node.39"
+}
+node: {
+label: "tree_function_decl
+----------
+name: context
+addr: 0xb7f62f00
+duplicated"
+title: "node.40"
+}
+node: {
+label: "tree_int_cst
+----------
+name: size
+addr: 0xb7ea9270
+value: 32"
+title: "node.41"
+}
+node: {
+label: "tree_common
+----------
+name: common
+addr: 0xb7ea9270"
+title: "node.42"
+}
+node: {
+label: "tree_base
+----------
+name: common
+addr: 0xb7ea9270"
+title: "node.43"
+}
+node: {
+label: "tree_type
+----------
+name: type
+addr: 0xb7ebd060"
+title: "node.44"
+}
+node: {
+label: "tree_int_cst
+----------
+name: size_unit
+addr: 0xb7ea90a8
+value: 4"
+title: "node.45"
+}
+node: {
+label: "tree_common
+----------
+name: common
+addr: 0xb7ea90a8"
+title: "node.46"
+}
+node: {
+label: "tree_base
+----------
+name: common
+addr: 0xb7ea90a8"
+title: "node.47"
+}
+node: {
+label: "tree_type
+----------
+name: type
+addr: 0xb7ebd000"
+title: "node.48"
+}
+edge: {
+sourcename: "node.7"
+targetname: "node.8"
+}
+edge: {
+sourcename: "node.7"
+targetname: "node.9"
+}
+edge: {
+sourcename: "node.6"
+targetname: "node.7"
+}
+edge: {
+sourcename: "node.11"
+targetname: "node.12"
+}
+edge: {
+sourcename: "node.10"
+targetname: "node.11"
+}
+edge: {
+sourcename: "node.6"
+targetname: "node.10"
+}
+edge: {
+sourcename: "node.16"
+targetname: "node.17"
+}
+edge: {
+sourcename: "node.15"
+targetname: "node.16"
+}
+edge: {
+sourcename: "node.14"
+targetname: "node.15"
+}
+edge: {
+sourcename: "node.19"
+targetname: "node.20"
+}
+edge: {
+sourcename: "node.18"
+targetname: "node.19"
+}
+edge: {
+sourcename: "node.21"
+targetname: "node.22"
+}
+edge: {
+sourcename: "node.18"
+targetname: "node.21"
+}
+edge: {
+sourcename: "node.23"
+targetname: "node.24"
+}
+edge: {
+sourcename: "node.18"
+targetname: "node.23"
+}
+edge: {
+sourcename: "node.14"
+targetname: "node.18"
+}
+edge: {
+sourcename: "node.13"
+targetname: "node.14"
+}
+edge: {
+sourcename: "node.6"
+targetname: "node.13"
+}
+edge: {
+sourcename: "node.5"
+targetname: "node.6"
+}
+edge: {
+sourcename: "node.26"
+targetname: "node.27"
+}
+edge: {
+sourcename: "node.25"
+targetname: "node.26"
+}
+edge: {
+sourcename: "node.25"
+targetname: "node.28"
+}
+edge: {
+sourcename: "node.25"
+targetname: "node.29"
+}
+edge: {
+sourcename: "node.5"
+targetname: "node.25"
+}
+edge: {
+sourcename: "node.4"
+targetname: "node.5"
+}
+edge: {
+sourcename: "node.3"
+targetname: "node.4"
+}
+edge: {
+sourcename: "node.31"
+targetname: "node.32"
+}
+edge: {
+sourcename: "node.30"
+targetname: "node.31"
+}
+edge: {
+sourcename: "node.3"
+targetname: "node.30"
+}
+edge: {
+sourcename: "node.2"
+targetname: "node.3"
+}
+edge: {
+sourcename: "node.37"
+targetname: "node.38"
+}
+edge: {
+sourcename: "node.37"
+targetname: "node.39"
+}
+edge: {
+sourcename: "node.36"
+targetname: "node.37"
+}
+edge: {
+sourcename: "node.36"
+targetname: "node.40"
+}
+edge: {
+sourcename: "node.35"
+targetname: "node.36"
+}
+edge: {
+sourcename: "node.42"
+targetname: "node.43"
+}
+edge: {
+sourcename: "node.42"
+targetname: "node.44"
+}
+edge: {
+sourcename: "node.41"
+targetname: "node.42"
+}
+edge: {
+sourcename: "node.35"
+targetname: "node.41"
+}
+edge: {
+sourcename: "node.46"
+targetname: "node.47"
+}
+edge: {
+sourcename: "node.46"
+targetname: "node.48"
+}
+edge: {
+sourcename: "node.45"
+targetname: "node.46"
+}
+edge: {
+sourcename: "node.35"
+targetname: "node.45"
+}
+edge: {
+sourcename: "node.34"
+targetname: "node.35"
+}
+edge: {
+sourcename: "node.33"
+targetname: "node.34"
+}
+edge: {
+sourcename: "node.2"
+targetname: "node.33"
+}
+edge: {
+sourcename: "node.1"
+targetname: "node.2"
+}
+}
