@@ -34,6 +34,7 @@
 #include "plugin-version.h"
 
 #include "gimple.h"
+#include "tree-flow.h"
 #include "tree-pass.h"
 #include "cfgloop.h"
 #include "cgraph.h"
@@ -41,20 +42,38 @@
 /* libgdl */
 #include "gdl.h"
 
+/* The common data and functions for each dump/view command.  */
+
 typedef struct
 {
+  /* The plugin name.  */
   char *plugin_name;
+
+  /* The plugin version.  */
   char *version;
+
+  /* Other information.  */
   char *info;
+
+  /* The name of the vcg viewer tool.  */
   char *vcg_viewer;
-  char *temp_file_name;
+
+  /* The top graph.  */
   gdl_graph *top_graph;
+
+  /* Temp file name to dump/view a graph.  */
+  char *temp_file_name;
+
+  /* Temp stream to get gcc dump.  */
+  FILE *stream;
+  char *stream_buf;
+  size_t stream_buf_size;
+
   void (*init) (void);
   void (*finish) (void);
   void (*error) (const char *format, ...);
-  void (*dump) (char *fname, gdl_graph *graph);
+  void (*dump) (char *fname);
   void (*show) (char *fname);
-  void (*tag) (char *str);
   void (*buf_print) (char *fmt, ...);
   char *(*buf_finish) (void);
 } vcg_plugin_common_t;

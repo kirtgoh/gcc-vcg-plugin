@@ -24,11 +24,6 @@ static char **bb_graph_title;
 static char **bb_graph_label;
 static char **bb_node_title;
 
-/* Temp file stream, used to get the bb dump from gcc dump function. */
-static FILE *tmp_stream;
-static char *tmp_buf;
-static size_t tmp_buf_size;
-
 static int *bb_index;
 
 /* Initialize all of the names.  */
@@ -39,9 +34,9 @@ create_names (void)
   char *func_name = (char *) current_function_name ();
   int bb_num = n_basic_blocks;
   
-  bb_graph_title = (char **) xmalloc (bb_num * sizeof (char *));
-  bb_graph_label = (char **) xmalloc (bb_num * sizeof (char *));
-  bb_node_title = (char **) xmalloc (bb_num * sizeof (char *));
+  bb_graph_title = XNEWVEC (char *, bb_num);
+  bb_graph_label = XNEWVEC (char *, bb_num);
+  bb_node_title = XNEWVEC (char *, bb_num);
 
   for (i = 0; i < bb_num; i++)
     {
@@ -102,11 +97,12 @@ create_bb_graph (basic_block bb)
   gdl_set_graph_folding (g, 1);
   gdl_set_graph_shape (g, "ellipse");
 
-  rewind (tmp_stream);
-  gimple_dump_bb (bb, tmp_stream, 0, TDF_VOPS|TDF_MEMSYMS|TDF_BLOCKS);
-  i = tmp_buf_size;
-  while (i > 1 && ISSPACE (tmp_buf[i - 1])) i--;
-  str = xstrndup (tmp_buf, i);
+  rewind (vcg_plugin_common.stream);
+  gimple_dump_bb (bb, vcg_plugin_common.stream, 0,
+                  TDF_VOPS|TDF_MEMSYMS|TDF_BLOCKS);
+  i = vcg_plugin_common.stream_buf_size;
+  while (i > 1 && ISSPACE (vcg_plugin_common.stream_buf[i - 1])) i--;
+  str = xstrndup (vcg_plugin_common.stream_buf, i);
   n = gdl_new_graph_node (g, bb_node_title[bb->index]);
   gdl_set_node_label (n, str);
 
@@ -155,13 +151,11 @@ dump_bb_to_file (char *fname, char *list)
   gdl_graph *graph, *bb_graph;
   gdl_edge *edge;
 
-  bb_index = (int *) xcalloc (n_basic_blocks, sizeof (int));
+  bb_index = XCNEWVEC (int, n_basic_blocks);
   parse_bb_list (list);
 
   /* Create names for graphs and nodes.  */
   create_names ();
-
-  tmp_stream = open_memstream (&tmp_buf, &tmp_buf_size);
 
   graph = vcg_plugin_common.top_graph;
 
@@ -184,12 +178,10 @@ dump_bb_to_file (char *fname, char *list)
             }
       }
 
-  vcg_plugin_common.dump (fname, graph);
+  vcg_plugin_common.dump (fname);
 
   /* Free names for graphs and nodes.  */
   free_names ();
-  fclose (tmp_stream);
-  free (tmp_buf);
   free (bb_index);
 }
 
@@ -198,11 +190,9 @@ dump_bb_to_file (char *fname, char *list)
 void
 vcg_plugin_dump_bb (char *list)
 {
-  char *fname = "dump-bb.vcg";
-
   vcg_plugin_common.init ();
 
-  dump_bb_to_file (fname, list);
+  dump_bb_to_file ("dump-bb.vcg", list);
 
   vcg_plugin_common.finish ();
 }
@@ -212,12 +202,10 @@ vcg_plugin_dump_bb (char *list)
 void
 vcg_plugin_view_bb (char *list)
 {
-  char *fname = vcg_plugin_common.temp_file_name;
-
   vcg_plugin_common.init ();
 
-  dump_bb_to_file (fname, list);
-  vcg_plugin_common.show (fname);
+  dump_bb_to_file (vcg_plugin_common.temp_file_name, list);
+  vcg_plugin_common.show (vcg_plugin_common.temp_file_name);
 
   vcg_plugin_common.finish ();
 }

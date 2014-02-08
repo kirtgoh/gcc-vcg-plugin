@@ -230,8 +230,8 @@ top_srcdir = @top_srcdir@
 GCCPLUGINS_DIR = `gcc -print-file-name=plugin`
 INCLUDES = -I $(GCCPLUGINS_DIR)/include -I $(srcdir)/../libgdl $(GMP_INC)
 AM_CFLAGS = -Wall
-pkglib_LTLIBRARIES = vcg-plugin.la
-EXTRA_DIST = vcg-plugin.gdbinit
+pkglib_LTLIBRARIES = vcg_plugin.la
+EXTRA_DIST = vcg_plugin.gdbinit
 vcg_plugin_la_SOURCES = \
 	gcc-bb.c \
 	gcc-dominance.c \
@@ -313,7 +313,7 @@ clean-pkglibLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-vcg-plugin.la: $(vcg_plugin_la_OBJECTS) $(vcg_plugin_la_DEPENDENCIES) 
+vcg_plugin.la: $(vcg_plugin_la_OBJECTS) $(vcg_plugin_la_DEPENDENCIES) 
 	$(vcg_plugin_la_LINK) -rpath $(pkglibdir) $(vcg_plugin_la_OBJECTS) $(vcg_plugin_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:

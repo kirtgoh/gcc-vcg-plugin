@@ -709,7 +709,7 @@ dump_tree_to_file (char *fname, tree node)
 
   graph = vcg_plugin_common.top_graph;
   create_tree_node (graph, node, "tree", 1);
-  vcg_plugin_common.dump (fname, graph);
+  vcg_plugin_common.dump (fname);
 
   htab_delete (tree_table);
 }
@@ -719,12 +719,9 @@ dump_tree_to_file (char *fname, tree node)
 void
 vcg_plugin_dump_tree (tree node)
 {
-  char *fname = "dump-tree.vcg";
-
   vcg_plugin_common.init ();
 
-  vcg_plugin_common.tag (fname);
-  dump_tree_to_file (fname, node);
+  dump_tree_to_file ("dump-tree.vcg", node);
 
   vcg_plugin_common.finish ();
 }
@@ -734,12 +731,10 @@ vcg_plugin_dump_tree (tree node)
 void
 vcg_plugin_view_tree (tree node)
 {
-  char *fname = vcg_plugin_common.temp_file_name;
-
   vcg_plugin_common.init ();
 
-  dump_tree_to_file (fname, node);
-  vcg_plugin_common.show (fname);
+  dump_tree_to_file (vcg_plugin_common.temp_file_name, node);
+  vcg_plugin_common.show (vcg_plugin_common.temp_file_name);
 
   vcg_plugin_common.finish ();
 }

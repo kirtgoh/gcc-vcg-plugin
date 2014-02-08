@@ -23,3 +23,7 @@ export GMP_LIB=@gmp_lib@
 SUBDIRS = libgdl vcg-plugin
 
 EXTRA_DIST = example
+
+dist-hook:
+	rm -rf `find $(distdir)/example -name ".svn"`
+

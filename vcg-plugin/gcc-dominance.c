@@ -44,7 +44,7 @@ dump_dominance_to_file (char *fname)
         gdl_new_graph_edge (graph, buf2, buf);
       }
 
-  vcg_plugin_common.dump (fname, graph);
+  vcg_plugin_common.dump (fname);
 }
 
 /* Public function to dump dominance graph.  */
@@ -52,11 +52,9 @@ dump_dominance_to_file (char *fname)
 void
 vcg_plugin_dump_dominance (void)
 {
-  char *fname = "dump-dominance.vcg";
-
   vcg_plugin_common.init ();
 
-  dump_dominance_to_file (fname);
+  dump_dominance_to_file ("dump-dominance.vcg");
 
   vcg_plugin_common.finish ();
 }
@@ -66,12 +64,10 @@ vcg_plugin_dump_dominance (void)
 void
 vcg_plugin_view_dominance (void)
 {
-  char *fname = vcg_plugin_common.temp_file_name;
-
   vcg_plugin_common.init ();
 
-  dump_dominance_to_file (fname);
-  vcg_plugin_common.show (fname);
+  dump_dominance_to_file (vcg_plugin_common.temp_file_name);
+  vcg_plugin_common.show (vcg_plugin_common.temp_file_name);
 
   vcg_plugin_common.finish ();
 }

@@ -24,12 +24,6 @@ static char **bb_graph_title;
 static char **bb_graph_label;
 static char **bb_node_title;
 
-/* Temp file stream, used to get the bb dump from gcc dump function. */
-
-static FILE *tmp_stream;
-static char *tmp_buf;
-static size_t tmp_buf_size;
-
 /* Initialize all of the names.  */
 
 static void
@@ -39,9 +33,9 @@ create_names (void)
   char *func_name = (char *) current_function_name ();
   int bb_num = n_basic_blocks;
   
-  bb_graph_title = (char **) xmalloc (bb_num * sizeof (char *));
-  bb_graph_label = (char **) xmalloc (bb_num * sizeof (char *));
-  bb_node_title = (char **) xmalloc (bb_num * sizeof (char *));
+  bb_graph_title = XNEWVEC (char *, bb_num);
+  bb_graph_label = XNEWVEC (char *, bb_num);
+  bb_node_title = XNEWVEC (char *, bb_num);
 
   for (i = 0; i < bb_num; i++)
     {
@@ -102,11 +96,11 @@ create_bb_graph (basic_block bb)
   gdl_set_graph_folding (g, 1);
   gdl_set_graph_shape (g, "ellipse");
 
-  rewind (tmp_stream);
-  gimple_dump_bb (bb, tmp_stream, 0, TDF_VOPS|TDF_MEMSYMS|TDF_BLOCKS);
-  i = tmp_buf_size;
-  while (i > 1 && ISSPACE (tmp_buf[i - 1])) i--;
-  str = xstrndup (tmp_buf, i);
+  rewind (vcg_plugin_common.stream);
+  gimple_dump_bb (bb, vcg_plugin_common.stream, 0, TDF_VOPS|TDF_MEMSYMS|TDF_BLOCKS);
+  i = vcg_plugin_common.stream_buf_size;
+  while (i > 1 && ISSPACE (vcg_plugin_common.stream_buf[i - 1])) i--;
+  str = xstrndup (vcg_plugin_common.stream_buf, i);
   n = gdl_new_graph_node (g, bb_node_title[bb->index]);
   gdl_set_node_label (n, str);
 
@@ -118,7 +112,7 @@ create_bb_graph (basic_block bb)
 static void
 dump_loop_to_file (char *fname, int loop_id)
 {
-  struct loop *loop = get_loop (loop_id);
+  struct loop *loop;
   basic_block bb;
   edge e;
   edge_iterator ei;
@@ -126,11 +120,14 @@ dump_loop_to_file (char *fname, int loop_id)
   gdl_graph *graph, *bb_graph;
   gdl_edge *edge;
 
-  create_names ();
-
-  tmp_stream = open_memstream (&tmp_buf, &tmp_buf_size);
+  if (loop_id >= number_of_loops ())
+    goto done;
 
   graph = vcg_plugin_common.top_graph;
+
+  loop = get_loop (loop_id);
+
+  create_names ();
 
   mark_dfs_back_edges ();
 
@@ -151,12 +148,11 @@ dump_loop_to_file (char *fname, int loop_id)
             }
       }
 
-  vcg_plugin_common.dump (fname, graph);
+done:
+  vcg_plugin_common.dump (fname);
 
   /* Free names for graphs and nodes.  */
   free_names ();
-  fclose (tmp_stream);
-  free (tmp_buf);
 }
 
 /* Public function to dump a loop.  */
@@ -164,14 +160,9 @@ dump_loop_to_file (char *fname, int loop_id)
 void
 vcg_plugin_dump_loop (unsigned loop_id)
 {
-  char *fname = "dump-loop.vcg";
-
-  if (loop_id >= number_of_loops ())
-    return;
-
   vcg_plugin_common.init ();
 
-  dump_loop_to_file (fname, loop_id);
+  dump_loop_to_file ("dump-loop.vcg", loop_id);
 
   vcg_plugin_common.finish ();
 }
@@ -181,15 +172,10 @@ vcg_plugin_dump_loop (unsigned loop_id)
 void
 vcg_plugin_view_loop (unsigned loop_id)
 {
-  char *fname = vcg_plugin_common.temp_file_name;
-
-  if (loop_id >= number_of_loops ())
-    return;
-
   vcg_plugin_common.init ();
 
-  dump_loop_to_file (fname, loop_id);
-  vcg_plugin_common.show (fname);
+  dump_loop_to_file (vcg_plugin_common.temp_file_name, loop_id);
+  vcg_plugin_common.show (vcg_plugin_common.temp_file_name);
 
   vcg_plugin_common.finish ();
 }

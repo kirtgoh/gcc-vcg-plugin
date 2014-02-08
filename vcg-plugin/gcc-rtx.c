@@ -17,25 +17,19 @@
 
 #include "vcg-plugin.h"
 
-/* Temp file stream, used to get the rtx dump. */
-static FILE *tmp_stream;
-static char *tmp_buf;
-static size_t tmp_buf_size;
-
 static void
 buf_print_rtx (const_rtx x)
 {
-  rewind (tmp_stream);
-  print_rtl_single (tmp_stream, x);
-  fflush(tmp_stream);
-  vcg_plugin_common.buf_print ("%s", tmp_buf);
-
-  return;
+  rewind (vcg_plugin_common.stream);
+  print_rtl_single (vcg_plugin_common.stream, x);
+  fflush(vcg_plugin_common.stream);
+  vcg_plugin_common.buf_print ("%s", vcg_plugin_common.stream_buf);
 }
 
-static gdl_node *
-create_rtx_node (gdl_graph *graph, const_rtx x)
+static void 
+dump_rtx_to_file (char *fname, const_rtx x)
 {
+  gdl_graph *graph;
   gdl_node *node, *node_x;
   char *label;
   enum rtx_code code;
@@ -48,7 +42,9 @@ create_rtx_node (gdl_graph *graph, const_rtx x)
   tree tn;
 
   if (x == 0)
-    return NULL;
+    goto done;
+
+  graph = vcg_plugin_common.top_graph;
 
   node = gdl_new_graph_node (graph, NULL);
 
@@ -284,25 +280,8 @@ create_rtx_node (gdl_graph *graph, const_rtx x)
         break;
 
       }
-
-  return node;
-}
-
-/* Dump rtx X into the file FNAME.  */
-
-static void
-dump_rtx_to_file (char *fname, const_rtx x)
-{
-  gdl_graph *graph;
-
-  tmp_stream = open_memstream (&tmp_buf, &tmp_buf_size);
-
-  graph = vcg_plugin_common.top_graph;
-  create_rtx_node (graph, x);
-  vcg_plugin_common.dump (fname, graph);
-
-  fclose (tmp_stream);
-  free (tmp_buf);
+done:
+  vcg_plugin_common.dump (fname);
 }
 
 /* Public function to dump a gcc rtx X.  */
@@ -310,11 +289,9 @@ dump_rtx_to_file (char *fname, const_rtx x)
 void
 vcg_plugin_dump_rtx (const_rtx x)
 {
-  char *fname = "dump-rtx.vcg";
-
   vcg_plugin_common.init ();
 
-  dump_rtx_to_file (fname, x);
+  dump_rtx_to_file ("dump-rtx.vcg", x);
 
   vcg_plugin_common.finish ();
 }
@@ -324,12 +301,10 @@ vcg_plugin_dump_rtx (const_rtx x)
 void
 vcg_plugin_view_rtx (const_rtx x)
 {
-  char *fname = vcg_plugin_common.temp_file_name;
-
   vcg_plugin_common.init ();
 
-  dump_rtx_to_file (fname, x);
-  vcg_plugin_common.show (fname);
+  dump_rtx_to_file (vcg_plugin_common.temp_file_name, x);
+  vcg_plugin_common.show (vcg_plugin_common.temp_file_name);
 
   vcg_plugin_common.finish ();
 }

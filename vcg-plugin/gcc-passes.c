@@ -154,7 +154,7 @@ dump_passes_to_file (char *fname)
           g = gdl_get_graph_parent (g);
         }
     }
-  vcg_plugin_common.dump (fname, graph);
+  vcg_plugin_common.dump (fname);
 }
 
 /* Public function to dump the gcc passes.  */
@@ -162,11 +162,9 @@ dump_passes_to_file (char *fname)
 void
 vcg_plugin_dump_passes (void)
 {
-  char *fname = "dump-passes.vcg";
-
   vcg_plugin_common.init ();
 
-  dump_passes_to_file (fname);
+  dump_passes_to_file ("dump-passes.vcg");
 
   vcg_plugin_common.finish ();
 }
@@ -176,12 +174,10 @@ vcg_plugin_dump_passes (void)
 void
 vcg_plugin_view_passes (void)
 {
-  char *fname = vcg_plugin_common.temp_file_name;
-
   vcg_plugin_common.init ();
 
-  dump_passes_to_file (fname);
-  vcg_plugin_common.show (fname);
+  dump_passes_to_file (vcg_plugin_common.temp_file_name);
+  vcg_plugin_common.show (vcg_plugin_common.temp_file_name);
 
   vcg_plugin_common.finish ();
 }

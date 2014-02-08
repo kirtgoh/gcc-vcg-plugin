@@ -84,7 +84,7 @@ dump_gimple_hierarchy_to_file (char *fname)
   NEW_EDGE ("gimple_statement_base", "gimple_statement_omp_atomic_load")
   NEW_EDGE ("gimple_statement_base", "gimple_statement_omp_atomic_store")
 
-  vcg_plugin_common.dump (fname, graph);
+  vcg_plugin_common.dump (fname);
 }
 
 /* Public function to dump the gcc gimple statement structure hierarchy.  */
@@ -92,11 +92,9 @@ dump_gimple_hierarchy_to_file (char *fname)
 void
 vcg_plugin_dump_gimple_hierarchy (void)
 {
-  char *fname = "dump-gimple-hierarchy.vcg";
-
   vcg_plugin_common.init ();
 
-  dump_gimple_hierarchy_to_file (fname);
+  dump_gimple_hierarchy_to_file ("dump-gimple-hierarchy.vcg");
 
   vcg_plugin_common.finish ();
 }
@@ -106,12 +104,10 @@ vcg_plugin_dump_gimple_hierarchy (void)
 void
 vcg_plugin_view_gimple_hierarchy (void)
 {
-  char *fname = vcg_plugin_common.temp_file_name;
-
   vcg_plugin_common.init ();
 
-  dump_gimple_hierarchy_to_file (fname);
-  vcg_plugin_common.show (fname);
+  dump_gimple_hierarchy_to_file (vcg_plugin_common.temp_file_name);
+  vcg_plugin_common.show (vcg_plugin_common.temp_file_name);
 
   vcg_plugin_common.finish ();
 }

@@ -32,22 +32,6 @@ Usage: dump-bbs [string INDEX_STRING]
 Dump the basic blocks which are specified by INDEX_STRING.
 end
 
-define view-dominance
-  call vcg_plugin_view_dominance ()
-end
-document view-dominance
-Usage: view-dominance
-View the current dominance graph.
-end
-
-define dump-dominance
-  call vcg_plugin_dump_dominance ()
-end
-document dump-dominance
-Usage: dump-dominance
-Dump the current dominance graph.
-end
-
 define view-cgraph
   call vcg_plugin_view_cgraph ()
 end
@@ -62,6 +46,38 @@ end
 document dump-cgraph
 Usage: dump-cgraph
 Dump the current call graph.
+end
+
+define view-cgraph-callee
+  call vcg_plugin_view_cgraph_callee ()
+end
+document view-cgraph-callee
+Usage: view-cgraph-callee
+View the current callee graph.
+end
+
+define dump-cgraph-callee
+  call vcg_plugin_dump_cgraph_callee ()
+end
+document dump-cgraph-callee
+Usage: dump-cgraph-callee
+Dump the current callee graph.
+end
+
+define view-dominance
+  call vcg_plugin_view_dominance ()
+end
+document view-dominance
+Usage: view-dominance
+View the current dominance graph.
+end
+
+define dump-dominance
+  call vcg_plugin_dump_dominance ()
+end
+document dump-dominance
+Usage: dump-dominance
+Dump the current dominance graph.
 end
 
 define view-function

@@ -20,7 +20,8 @@
 /* plugin license check */
 int plugin_is_GPL_compatible;
 
-/* plugin initialization */
+/* Plugin initialization.  */
+
 int
 plugin_init (struct plugin_name_args *plugin_info,
              struct plugin_gcc_version *version)
@@ -35,12 +36,21 @@ plugin_init (struct plugin_name_args *plugin_info,
   /* Initialize the vcg plugin */
   for (i = 0; i < argc; i++)
     {
-      printf ("key: %s\n", argv[i].key);
-      printf ("value: %s\n", argv[i].value);
+      //printf ("key: %s\n", argv[i].key);
+      //printf ("value: %s\n", argv[i].value);
+
       /* Get the vcg viewer tool, default is "vcgview". */
       if (strcmp (argv[i].key, "viewer") == 0)
         {
           vcg_plugin_common.vcg_viewer = argv[i].value;
+        }
+
+      /* Dump call graph.  */
+      if (strcmp (argv[i].key, "cgraph") == 0)
+        {
+          register_callback (plugin_info->base_name,
+                             PLUGIN_ALL_IPA_PASSES_START,
+                             vcg_plugin_dump_cgraph, NULL);
         }
     }
   vcg_plugin_common.info = concat ("GCC: (GNU) ", version->basever,

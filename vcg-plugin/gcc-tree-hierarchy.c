@@ -104,7 +104,7 @@ dump_tree_hierarchy_to_file (char *fname)
   NEW_EDGE ("tree_common", "tree_optimization_option")
   NEW_EDGE ("tree_common", "tree_target_option")
 
-  vcg_plugin_common.dump (fname, graph);
+  vcg_plugin_common.dump (fname);
 }
 
 /* Public function to dump the gcc tree structure hierarchy.  */
@@ -112,11 +112,9 @@ dump_tree_hierarchy_to_file (char *fname)
 void
 vcg_plugin_dump_tree_hierarchy (void)
 {
-  char *fname = "dump-tree-hierarchy.vcg";
-
   vcg_plugin_common.init ();
 
-  dump_tree_hierarchy_to_file (fname);
+  dump_tree_hierarchy_to_file ("dump-tree-hierarchy.vcg");
 
   vcg_plugin_common.finish ();
 }
@@ -126,12 +124,10 @@ vcg_plugin_dump_tree_hierarchy (void)
 void
 vcg_plugin_view_tree_hierarchy (void)
 {
-  char *fname = vcg_plugin_common.temp_file_name;
-
   vcg_plugin_common.init ();
 
-  dump_tree_hierarchy_to_file (fname);
-  vcg_plugin_common.show (fname);
+  dump_tree_hierarchy_to_file (vcg_plugin_common.temp_file_name);
+  vcg_plugin_common.show (vcg_plugin_common.temp_file_name);
 
   vcg_plugin_common.finish ();
 }

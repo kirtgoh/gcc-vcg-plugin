@@ -21,9 +21,9 @@ INCLUDES = -I $(GCCPLUGINS_DIR)/include -I $(srcdir)/../libgdl $(GMP_INC)
 
 AM_CFLAGS = -Wall
 
-pkglib_LTLIBRARIES = vcg-plugin.la
+pkglib_LTLIBRARIES = vcg_plugin.la
 
-EXTRA_DIST = vcg-plugin.gdbinit
+EXTRA_DIST = vcg_plugin.gdbinit
 
 vcg_plugin_la_SOURCES = \
 	gcc-bb.c \

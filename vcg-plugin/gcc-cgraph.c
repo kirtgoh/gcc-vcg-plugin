@@ -18,6 +18,75 @@
 #include "vcg-plugin.h"
 
 static void
+create_node_and_edges_callee (gdl_graph *graph, struct cgraph_node *node)
+{
+  struct cgraph_edge *edge;
+  gdl_node *src, *dest;
+  char *title_src, *title_dest;
+  char *label;
+
+  label = (char *) cgraph_node_name (node);
+  title_src = label;
+  src = gdl_new_graph_node (graph, title_src);
+  gdl_set_node_label (src, label);
+
+  for (edge = node->callees; edge; edge = edge->next_callee)
+    {
+      label = (char *) cgraph_node_name (edge->callee);
+      vcg_plugin_common.buf_print ("%s.%s", title_src, label);
+      title_dest = vcg_plugin_common.buf_finish ();
+      if (gdl_find_edge (graph, title_src, title_dest) == NULL)
+        {
+          dest = gdl_new_graph_node (graph, title_dest);
+          gdl_set_node_label (dest, label);
+          gdl_new_graph_edge (graph, title_src, title_dest);
+        }
+    }
+}
+
+/* Dump callee graph into the file FNAME.  */
+
+static void
+dump_cgraph_callee_to_file (char *fname)
+{
+  gdl_graph *graph;
+  struct cgraph_node *node;
+
+  graph = vcg_plugin_common.top_graph;
+  gdl_set_graph_orientation (graph, "left_to_right");
+
+  for (node = cgraph_nodes; node; node = node->next)
+    create_node_and_edges_callee (graph, node);
+
+  vcg_plugin_common.dump (fname);
+}
+
+/* Public function to dump callee graph.  */
+
+void
+vcg_plugin_dump_cgraph_callee (void)
+{
+  vcg_plugin_common.init ();
+
+  dump_cgraph_callee_to_file ("dump-cgraph-callee.vcg");
+
+  vcg_plugin_common.finish ();
+}
+
+/* Public function to view callee graph.  */
+
+void
+vcg_plugin_view_cgraph_callee (void)
+{
+  vcg_plugin_common.init ();
+
+  dump_cgraph_callee_to_file (vcg_plugin_common.temp_file_name);
+  vcg_plugin_common.show (vcg_plugin_common.temp_file_name);
+
+  vcg_plugin_common.finish ();
+}
+
+static void
 create_node_and_edges (gdl_graph *graph, struct cgraph_node *node)
 {
   struct cgraph_edge *edge;
@@ -44,10 +113,12 @@ dump_cgraph_to_file (char *fname)
   struct cgraph_node *node;
 
   graph = vcg_plugin_common.top_graph;
+  gdl_set_graph_orientation (graph, "left_to_right");
+
   for (node = cgraph_nodes; node; node = node->next)
     create_node_and_edges (graph, node);
 
-  vcg_plugin_common.dump (fname, graph);
+  vcg_plugin_common.dump (fname);
 }
 
 /* Public function to dump call graph.  */
@@ -55,11 +126,9 @@ dump_cgraph_to_file (char *fname)
 void
 vcg_plugin_dump_cgraph (void)
 {
-  char *fname = "dump-cgraph.vcg";
-
   vcg_plugin_common.init ();
 
-  dump_cgraph_to_file (fname);
+  dump_cgraph_to_file ("dump-cgraph.vcg");
 
   vcg_plugin_common.finish ();
 }
@@ -69,12 +138,10 @@ vcg_plugin_dump_cgraph (void)
 void
 vcg_plugin_view_cgraph (void)
 {
-  char *fname = vcg_plugin_common.temp_file_name;
-
   vcg_plugin_common.init ();
 
-  dump_cgraph_to_file (fname);
-  vcg_plugin_common.show (fname);
+  dump_cgraph_to_file (vcg_plugin_common.temp_file_name);
+  vcg_plugin_common.show (vcg_plugin_common.temp_file_name);
 
   vcg_plugin_common.finish ();
 }
