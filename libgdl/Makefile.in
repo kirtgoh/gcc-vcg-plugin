@@ -68,9 +68,6 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 libgdl_la_LIBADD =
 am_libgdl_la_OBJECTS = gdl.lo gdl-attr.lo
 libgdl_la_OBJECTS = $(am_libgdl_la_OBJECTS)
-libgdl_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
-	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
-	$(libgdl_la_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -209,7 +206,6 @@ AM_CFLAGS = -Wall
 libgdl_la_SOURCES = \
         gdl.c gdl.h gdl-attr.c
 
-libgdl_la_LDFLAGS = -lc -liberty
 all: all-am
 
 .SUFFIXES:
@@ -254,7 +250,7 @@ clean-noinstLTLIBRARIES:
 	  rm -f "$${dir}/so_locations"; \
 	done
 libgdl.la: $(libgdl_la_OBJECTS) $(libgdl_la_DEPENDENCIES) 
-	$(libgdl_la_LINK)  $(libgdl_la_OBJECTS) $(libgdl_la_LIBADD) $(LIBS)
+	$(LINK)  $(libgdl_la_OBJECTS) $(libgdl_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)

@@ -25,6 +25,4 @@ AM_CFLAGS = -Wall
 
 libgdl_la_SOURCES = \
         gdl.c gdl.h gdl-attr.c
-                   
-libgdl_la_LDFLAGS = -lc -liberty
 

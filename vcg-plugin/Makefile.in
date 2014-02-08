@@ -88,7 +88,7 @@ am__base_list = \
 am__installdirs = "$(DESTDIR)$(pkglibdir)"
 LTLIBRARIES = $(pkglib_LTLIBRARIES)
 vcg_plugin_la_DEPENDENCIES = ../libgdl/libgdl.la
-am_vcg_plugin_la_OBJECTS = gcc-dominance.lo gcc-cgraph.lo \
+am_vcg_plugin_la_OBJECTS = gcc-bb.lo gcc-dominance.lo gcc-cgraph.lo \
 	gcc-function.lo gcc-gimple-hierarchy.lo gcc-passes.lo \
 	gcc-plugin-api.lo gcc-rtx.lo gcc-tree.lo gcc-tree-hierarchy.lo \
 	vcg-plugin.lo
@@ -233,6 +233,7 @@ AM_CFLAGS = -Wall
 pkglib_LTLIBRARIES = vcg-plugin.la
 EXTRA_DIST = vcg-plugin.gdbinit
 vcg_plugin_la_SOURCES = \
+	gcc-bb.c \
 	gcc-dominance.c \
 	gcc-cgraph.c \
 	gcc-function.c \
@@ -244,7 +245,7 @@ vcg_plugin_la_SOURCES = \
 	gcc-tree-hierarchy.c \
         vcg-plugin.c vcg-plugin.h
 
-vcg_plugin_la_LDFLAGS = -module -lc
+vcg_plugin_la_LDFLAGS = -module
 vcg_plugin_la_LIBADD = ../libgdl/libgdl.la
 all: all-am
 
@@ -320,6 +321,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gcc-bb.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gcc-cgraph.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gcc-dominance.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gcc-function.Plo@am__quote@

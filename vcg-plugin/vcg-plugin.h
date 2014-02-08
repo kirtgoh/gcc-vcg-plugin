@@ -60,8 +60,8 @@ extern vcg_plugin_common_t vcg_plugin_common;
 extern void vcg_plugin_dump_cgraph (void);
 extern void vcg_plugin_view_cgraph (void);
 
-extern void vcg_plugin_dump_function (tree fn); 
-extern void vcg_plugin_view_function (tree fn); 
+extern void vcg_plugin_dump_function (void); 
+extern void vcg_plugin_view_function (void); 
 
 extern void vcg_plugin_dump_gimple_hierarchy (void);
 extern void vcg_plugin_view_gimple_hierarchy (void);

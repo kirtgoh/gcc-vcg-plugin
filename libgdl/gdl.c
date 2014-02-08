@@ -27,7 +27,7 @@
 
 /* Used to create a node/graph with no title.  */
 static unsigned anonymous_title_id = 0;
-static char *buf[512];
+static char buf[512];
 
 /* Create a node for a given TITLE.  */
 

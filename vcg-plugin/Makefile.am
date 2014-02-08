@@ -26,6 +26,7 @@ pkglib_LTLIBRARIES = vcg-plugin.la
 EXTRA_DIST = vcg-plugin.gdbinit
 
 vcg_plugin_la_SOURCES = \
+	gcc-bb.c \
 	gcc-dominance.c \
 	gcc-cgraph.c \
 	gcc-function.c \
@@ -36,8 +37,7 @@ vcg_plugin_la_SOURCES = \
 	gcc-tree.c \
 	gcc-tree-hierarchy.c \
         vcg-plugin.c vcg-plugin.h
-                   
 
-vcg_plugin_la_LDFLAGS = -module -lc
+vcg_plugin_la_LDFLAGS = -module
 
 vcg_plugin_la_LIBADD = ../libgdl/libgdl.la

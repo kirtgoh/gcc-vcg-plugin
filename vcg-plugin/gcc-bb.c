@@ -1,4 +1,4 @@
-/* Dump or view gcc function.
+/* Dump or view gcc basic blocks.
  
    Copyright (C) 2010, 2011 Mingjie Xing, mingjie.xing@gmail.com.
 
@@ -18,6 +18,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <ctype.h>
 
 #include "gcc-plugin.h"
 #include "plugin.h"
@@ -35,6 +36,8 @@ static char **bb_node_title;
 static FILE *tmp_stream;
 static char *tmp_buf;
 static size_t tmp_buf_size;
+
+static int *bb_index;
 
 /* Initialize all of the names.  */
 static void
@@ -115,8 +118,40 @@ create_bb_graph (basic_block bb)
   return g;
 }
 
+void
+parse_bb_list (char *list)
+{
+  char *s, *t;
+  int i, m, n;
+
+  s = list;
+
+  while (s && *s != '\0')
+    {
+      while (! ISDIGIT (*s) && *s != '\0') s++;
+
+      if (*s == '\0')
+        break;
+
+      n = m = (int) strtol (s, &t, 10);
+
+      if (*t == ':')
+        {
+           s = t + 1;
+           n = (int) strtol (s, &t, 10);
+        }
+
+      // printf ("m = %d    n = %d\n", m, n);
+      s = t;
+
+      n = n < n_basic_blocks - 1 ? n : n_basic_blocks - 1;
+      for (i = m; i <= n; i++)
+        bb_index [i] = 1;
+    }
+}
+
 static void
-dump_function_to_file (char *fname)
+dump_bb_to_file (char *fname, char *list)
 {
   basic_block bb;
   edge e;
@@ -124,6 +159,9 @@ dump_function_to_file (char *fname)
 
   gdl_graph *graph, *bb_graph;
   gdl_edge *edge;
+
+  bb_index = (int *) xcalloc (n_basic_blocks, sizeof (int));
+  parse_bb_list (list);
 
   /* Create names for graphs and nodes.  */
   create_names (function_name, n_basic_blocks);
@@ -135,18 +173,21 @@ dump_function_to_file (char *fname)
   mark_dfs_back_edges ();
 
   FOR_ALL_BB (bb)
-    {
-      bb_graph = create_bb_graph (bb);
-      gdl_add_subgraph (graph, bb_graph);
+    if (bb_index[bb->index])
+      {
+        bb_graph = create_bb_graph (bb);
+        gdl_add_subgraph (graph, bb_graph);
 
-      FOR_EACH_EDGE (e, ei, bb->succs)
-        {
-          edge = gdl_new_graph_edge (graph, bb_graph_title[e->src->index],
-                              bb_graph_title[e->dest->index]);
+        FOR_EACH_EDGE (e, ei, bb->succs)
+          if (bb_index[e->dest->index])
+            {
+              edge = gdl_new_graph_edge (graph,
+                                         bb_graph_title[e->src->index],
+                                         bb_graph_title[e->dest->index]);
               if (e->flags & EDGE_DFS_BACK)
                 gdl_set_edge_type (edge, GDL_BACKEDGE);
-        }
-    }
+            }
+      }
 
   vcg_plugin_common.dump (fname, graph);
 
@@ -154,12 +195,13 @@ dump_function_to_file (char *fname)
   free_names (n_basic_blocks);
   fclose (tmp_stream);
   free (tmp_buf);
+  free (bb_index);
 }
 
-/* Public function to dump a gcc function FN.  */
+/* Public function to dump gcc basic blocks.  */
 
 void
-vcg_plugin_dump_function (void)
+vcg_plugin_dump_bb (char *list)
 {
   char *fname;
 
@@ -168,17 +210,18 @@ vcg_plugin_dump_function (void)
   /* Get the function name.  */
   function_name = current_function_name ();
   /* Create the dump file name.  */
-  asprintf (&fname, "dump-function-%s.vcg", function_name);
+  asprintf (&fname, "dump-%s-bb.vcg", function_name);
   vcg_plugin_common.tag (fname);
-  dump_function_to_file (fname);
+
+  dump_bb_to_file (fname, list);
 
   vcg_plugin_common.finish ();
 }
 
-/* Public function to view a gcc function FN.  */
+/* Public function to view a gcc basic blocks.  */
 
 void
-vcg_plugin_view_function (void)
+vcg_plugin_view_bb (char *list)
 {
   char *fname;
 
@@ -189,7 +232,8 @@ vcg_plugin_view_function (void)
   /* Get the temp file name.  */
   fname = vcg_plugin_common.temp_file_name;
 
-  dump_function_to_file (fname);
+  dump_bb_to_file (fname, list);
+
   vcg_plugin_common.show (fname);
 
   vcg_plugin_common.finish ();

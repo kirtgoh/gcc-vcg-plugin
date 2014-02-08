@@ -1,5 +1,37 @@
 # Define vcg plugin commands used in gdb. #
 
+define view-bb
+  call vcg_plugin_view_bb ("$arg0")
+end
+document view-bb
+Usage: view-bb index
+View the basic block which is specified by index.
+end
+
+define dump-bb
+  call vcg_plugin_dump_bb ("$arg0")
+end
+document dump-bb
+Usage: dump-bb index
+Dump the basic block which is specified by index.
+end
+
+define view-bbs
+  call vcg_plugin_view_bb ($arg0)
+end
+document view-bbs
+Usage: view-bbs "index string"
+View the basic blocks which are specified by index string.
+end
+
+define dump-bbs
+  call vcg_plugin_dump_bb ($arg0)
+end
+document dump-bbs
+Usage: dump-bb "index string"
+Dump the basic blocks which are specified by index string.
+end
+
 define view-dominance
   call vcg_plugin_view_dominance ()
 end
@@ -33,19 +65,19 @@ Dump the current call graph.
 end
 
 define view-function
-  call vcg_plugin_view_function ($arg0)
+  call vcg_plugin_view_function ()
 end
 document view-function
-Usage: view-function [tree FUNCTION_DECL_TREE]
-View the control flow graph of FUNCTION_DECL_TREE.
+Usage: view-function 
+View the control flow graph of the current function.
 end
 
 define dump-function
-  call vcg_plugin_dump_function ($arg0)
+  call vcg_plugin_dump_function ()
 end
 document dump-function
-Usage: dump-function [tree FUNCTION_DECL_TREE]
-Dump the control flow graph of FUNCTION_DECL_TREE.
+Usage: dump-function 
+Dump the control flow graph of the current function.
 end
 
 define view-gimple-hierarchy
