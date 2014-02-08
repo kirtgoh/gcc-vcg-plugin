@@ -127,6 +127,7 @@ enum gdl_graph_attr
   GDL_GRAPH_ATTR_label,
   GDL_GRAPH_ATTR_layout_algorithm,
   GDL_GRAPH_ATTR_near_edges,
+  GDL_GRAPH_ATTR_node_alignment,
   GDL_GRAPH_ATTR_orientation,
   GDL_GRAPH_ATTR_port_sharing,
   GDL_GRAPH_ATTR_shape,
@@ -154,6 +155,7 @@ struct gdl_graph
   char *label;
   char *layout_algorithm;
   char *near_edges;
+  char *node_alignment;
   char *orientation;
   char *port_sharing;
   char *shape;
@@ -244,6 +246,7 @@ extern void gdl_set_graph_folding (gdl_graph *graph, int value);
 extern void gdl_set_graph_label (gdl_graph *graph, char *value);
 extern void gdl_set_graph_layout_algorithm (gdl_graph *graph, char *value);
 extern void gdl_set_graph_near_edges (gdl_graph *graph, char *value);
+extern void gdl_set_graph_node_alignment (gdl_graph *graph, char *value);
 extern void gdl_set_graph_orientation (gdl_graph *graph, char *value);
 extern void gdl_set_graph_port_sharing (gdl_graph *graph, char *value);
 extern void gdl_set_graph_shape (gdl_graph *graph, char *value);

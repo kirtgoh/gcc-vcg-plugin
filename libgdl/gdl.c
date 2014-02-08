@@ -494,6 +494,11 @@ gdl_dump_graph (FILE *fout, gdl_graph *graph)
       fprintf (fout, "near_edges: %s\n", graph->near_edges);
     }
 
+  if (graph->set_p[GDL_GRAPH_ATTR_node_alignment])
+    {
+      fprintf (fout, "node_alignment: %s\n", graph->node_alignment);
+    }
+
   if (graph->set_p[GDL_GRAPH_ATTR_orientation])
     {
       fprintf (fout, "orientation: %s\n", graph->orientation);

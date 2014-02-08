@@ -18,7 +18,7 @@
 #ifndef VCG_PLUGIN_H
 #define VCG_PLUGIN_H
 
-/* GNU extensions, asprintf */
+/* GNU extensions, asprintf etc.  */
 #define _GNU_SOURCE
 
 #include <stddef.h>
@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <ctype.h>
 
-/* gcc's header files */
+/* GCC header files.  */
 
 #include "gcc-plugin.h"
 #include "plugin.h"
@@ -38,6 +38,19 @@
 #include "tree-pass.h"
 #include "cfgloop.h"
 #include "cgraph.h"
+
+/* Check gcc version.  */
+
+#ifndef GCC_VERSION
+#define GCC_VERSION (__GNUC__ * 1000 + __GNUC_MINOR__)
+#endif /* GCC_VERSION */
+
+#if GCC_VERSION == 4005
+  #warning "GCC_VERSION 4.5 not guaranteed, try newer version please."
+#endif
+#if GCC_VERSION < 4005
+  #error "GCC_VERSION < 4.5 not supported."
+#endif
 
 /* libgdl */
 #include "gdl.h"
@@ -51,6 +64,9 @@ typedef struct
 
   /* The plugin version.  */
   char *version;
+
+  /* The gcc base version.  */
+  char *gcc_basever;
 
   /* Other information.  */
   char *info;
@@ -110,6 +126,12 @@ extern void vcg_plugin_view_rtx (const_rtx x);
 extern void vcg_plugin_dump_tree_hierarchy (void);
 extern void vcg_plugin_view_tree_hierarchy (void);
 
+extern void vcg_plugin_dump_tree_hierarchy_4_6 (void);
+extern void vcg_plugin_view_tree_hierarchy_4_6 (void);
+
+extern void vcg_plugin_dump_tree_hierarchy_4_7 (void);
+extern void vcg_plugin_view_tree_hierarchy_4_7 (void);
+
 extern void vcg_plugin_dump_tree (tree node);
 extern void vcg_plugin_view_tree (tree node);
 
@@ -128,5 +150,7 @@ extern void *vcg_plugin_callback_pass_lists (void *, void *);
 extern void *vcg_plugin_callback_gimple_hierarchy (void *, void *);
 
 extern void *vcg_plugin_callback_tree_hierarchy (void *, void *);
+extern void *vcg_plugin_callback_tree_hierarchy_4_6 (void *, void *);
+extern void *vcg_plugin_callback_tree_hierarchy_4_7 (void *, void *);
 
 #endif

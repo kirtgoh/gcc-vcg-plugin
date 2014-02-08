@@ -87,6 +87,7 @@ vcg_init (void)
   gdl_set_graph_node_borderwidth (graph, 1);
   gdl_set_graph_edge_thickness (graph, 1);
   gdl_set_graph_splines (graph, "yes");
+  gdl_set_graph_node_alignment (graph, "top");
   gdl_set_graph_colorentry (graph, 100, 70, 130, 180);
   gdl_set_graph_node_textcolor (graph, "white");
   gdl_set_graph_node_color (graph, "100");
@@ -135,12 +136,21 @@ vcg_buf_finish (void)
 
 vcg_plugin_common_t vcg_plugin_common =
 {
+  /* The plugin name.  */
   "VCG Plugin",
-  "1.6",
+  /* The plugin version.  */
+  "1.7",
+  /* The gcc base version.  */
   NULL,
+  /* Other information.  */
+  NULL,
+  /* The name of the vcg viewer tool.  */
   "vcgview",
+  /* The top graph.  */
   NULL,
+  /* Temp file name to dump/view a graph.  */
   "dump-temp.vcg",
+  /* Temp stream to get gcc dump.  */
   NULL,
   NULL,
   0,

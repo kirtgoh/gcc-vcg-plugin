@@ -1,4 +1,4 @@
-Here is the example of using vcg plugin in gdb.
+Here is the example of using vcg plugin in gdb,
 
 $ gdb -q -args /path/to/cc1 -O3 -fplugin=/path/to/vcg-plugin.so foo.c
 (gdb) so /path/to/vcg-plugin.gdbinit
@@ -17,7 +17,7 @@ $ gdb -q -args /path/to/cc1 -O3 -fplugin=/path/to/vcg-plugin.so foo.c
 (gdb) dump-cgraph 
 (gdb) dump-passes
 
-Here is the example of using vcg plugin without gdb.
+Here is the example of using vcg plugin without gdb,
 
 $ export VCGPLUGIN=/path/to/vcg-plugin.so
 $ gcc -fplugin=$VCGPLUGIN -fplugin-arg-vcg_plugin-cgraph -c foo.c
@@ -27,4 +27,10 @@ $ gcc -fplugin=$VCGPLUGIN -fplugin-arg-vcg_plugin-gimple-hierarchy -c foo.c
 $ gcc -fplugin=$VCGPLUGIN -fplugin-arg-vcg_plugin-passes -c foo.c
 $ gcc -fplugin=$VCGPLUGIN -fplugin-arg-vcg_plugin-pass-lists -c foo.c
 $ gcc -fplugin=$VCGPLUGIN -fplugin-arg-vcg_plugin-tree-hierarchy -c foo.c
+
+Here is the example to use plugin in build-vcg-plugin/vcg-plugin directory,
+
+$ make clean
+$ make CFLAGS="-O0 -fplugin=$VCGPLUGIN -fplugin-arg-vcg_plugin-cgraph -fplugin-arg-vcg_plugin-cgraph-callee -fplugin-arg-vcg_plugin-cgraph-caller"
+$ for i in `ls *.vcg`; do vcgview $i ${i%vcg}png; done
 

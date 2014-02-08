@@ -335,6 +335,13 @@ gdl_set_graph_near_edges (gdl_graph *graph, char *value)
 }
 
 void
+gdl_set_graph_node_alignment (gdl_graph *graph, char *value)
+{
+  graph->set_p[GDL_GRAPH_ATTR_node_alignment] = 1;
+  graph->node_alignment = value;
+}
+
+void
 gdl_set_graph_orientation (gdl_graph *graph, char *value)
 {
   graph->set_p[GDL_GRAPH_ATTR_orientation] = 1;

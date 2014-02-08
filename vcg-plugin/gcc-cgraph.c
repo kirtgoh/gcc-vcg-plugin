@@ -65,17 +65,21 @@ get_title (struct cgraph_node *node, char *prefix)
 /* Create gdl edge based on EDGE and PREFIX.  */
 
 static void
-create_edge (gdl_graph *graph, struct cgraph_edge *edge, char *prefix)
+create_edge (gdl_graph *graph, struct cgraph_edge *edge, char *prefix,
+             bool backedge_p)
 {
   char *source_title, *target_title;
   struct cgraph_node *source, *target;
+  gdl_edge *e;
   
   source = edge->caller;
   target = edge->callee;
 
   source_title = get_title (source, prefix);
   target_title = get_title (target, prefix);
-  gdl_new_graph_edge (graph, source_title, target_title);
+  e = gdl_new_graph_edge (graph, source_title, target_title);
+  if (backedge_p)
+    gdl_set_edge_type (e, GDL_BACKEDGE);
 }
 
 /* Create gdl node based on NODE and PREFIX.  */
@@ -104,6 +108,10 @@ create_node_and_edges_specific (gdl_graph *graph, struct cgraph_node *node, int 
   char *prefix;
   int sp;
 
+  /* Don't create the single node.  */
+  if ((callee_p && !node->callees) || !node->callers)
+    return;
+
   title_table = htab_create (10, htab_hash_string, string_hash_eq, NULL);
 
   prefix = get_label (node);
@@ -131,7 +139,7 @@ create_node_and_edges_specific (gdl_graph *graph, struct cgraph_node *node, int 
 
           if (gdl_find_edge (graph, get_title (source, prefix),
                              get_title (target, prefix)) == NULL)
-            create_edge (graph, edge, prefix);
+            create_edge (graph, edge, prefix, !callee_p);
 
           if (gdl_find_node (graph, get_title (node_x, prefix)) == NULL)
             {
@@ -245,6 +253,10 @@ create_node_and_edges (gdl_graph *graph, struct cgraph_node *node)
 {
   struct cgraph_edge *edge;
   char *title, *title_a;
+
+  /* Don't create the single node.  */
+  if (!node->callees && !node->callers)
+    return;
 
   title = (char *) cgraph_node_name (node);
   gdl_new_graph_node (graph, title);
