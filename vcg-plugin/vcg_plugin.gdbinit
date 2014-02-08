@@ -64,6 +64,22 @@ Usage: dump-cgraph-callee
 Dump the current callee graph.
 end
 
+define view-cgraph-caller
+  call vcg_plugin_view_cgraph_caller ()
+end
+document view-cgraph-caller
+Usage: view-cgraph-caller
+View the current caller graph.
+end
+
+define dump-cgraph-caller
+  call vcg_plugin_dump_cgraph_caller ()
+end
+document dump-cgraph-caller
+Usage: dump-cgraph-caller
+Dump the current caller graph.
+end
+
 define view-dominance
   call vcg_plugin_view_dominance ()
 end

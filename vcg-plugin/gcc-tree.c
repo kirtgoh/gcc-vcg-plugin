@@ -17,6 +17,8 @@
 
 #include "vcg-plugin.h"
 
+#if GCC_VERSION == 4006
+
 static const char *ts_names[] = {
   "tree_base",
   "tree_common",
@@ -739,3 +741,4 @@ vcg_plugin_view_tree (tree node)
   vcg_plugin_common.finish ();
 }
 
+#endif
