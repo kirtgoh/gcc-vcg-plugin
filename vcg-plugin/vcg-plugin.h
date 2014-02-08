@@ -113,4 +113,20 @@ extern void vcg_plugin_view_tree_hierarchy (void);
 extern void vcg_plugin_dump_tree (tree node);
 extern void vcg_plugin_view_tree (tree node);
 
+/* These are callback functins, which can be registered to dump
+   gcc internal data structures. */
+
+extern void *vcg_plugin_callback_cgraph (void *, void *);
+extern void *vcg_plugin_callback_callee (void *, void *);
+extern void *vcg_plugin_callback_caller (void *, void *);
+
+extern void *vcg_plugin_callback_passes_start (void *, void *);
+extern void *vcg_plugin_callback_pass (void *, void *);
+extern void *vcg_plugin_callback_passes_finish (void *, void *);
+extern void *vcg_plugin_callback_pass_lists (void *, void *);
+
+extern void *vcg_plugin_callback_gimple_hierarchy (void *, void *);
+
+extern void *vcg_plugin_callback_tree_hierarchy (void *, void *);
+
 #endif

@@ -40,9 +40,29 @@ make install
 
 First, a vcg viewer tool is required. See http://code.google.com/p/vcgviewer. 
 
+1. Use plugin in gdb.
+
 The pre-defined vcg plugin commands can be used. Rename file "vcg-plugin.gdbinit" to ".gdbinit" or add "source vcg-plugin.gdbinit" in your original ".gdbinit".
 
 You can use -fplugin-arg-vcg-viewer=vcgview to select vcg viewer, default is vcgview. 
+
+2. Use plugin without gdb.
+
+The plugin also can work without gdb, using -fplugin-arg-vcg_plugin-option. Options are,
+
+    * cgraph ---- dump the call graph before IPA passes.
+    * cgraph-callee ---- dump the callee graph for each function.
+    * cgraph-caller ---- dump the caller graph for each function.
+    * gimple-hierarchy ---- dump the gimple hierarchy graph.
+    * help ---- show this help.
+    * passes ---- dump the passes graph.
+    * pass-lists ---- dump the pass lists graph.
+    * tree-hierarchy ---- dump the tree hierarchy graph.
+    * viewer=name ---- set the vcg viewer, default is vcgview. 
+
+Here's an example about how to use vcg plugin without gdb:
+
+    gcc -fplugin=/path/to/vcg_plugin.so -fplugin-arg-vcg_plugin-cgraph foo.c 
 
 There are examples in "example" directory. 
 

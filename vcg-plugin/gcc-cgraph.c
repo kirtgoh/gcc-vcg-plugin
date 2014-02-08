@@ -304,4 +304,31 @@ vcg_plugin_view_cgraph (void)
   vcg_plugin_common.finish ();
 }
 
+/* Plugin callback function for PLUGIN_ALL_IPA_PASSES_START event.  */
+
+void *
+vcg_plugin_callback_cgraph (void *gcc_data, void *user_data)
+{
+  vcg_plugin_dump_cgraph ();
+  return NULL;
+}
+
+/* Plugin callback function for PLUGIN_ALL_IPA_PASSES_START event.  */
+
+void *
+vcg_plugin_callback_callee (void *gcc_data, void *user_data)
+{
+  vcg_plugin_dump_cgraph_callee ();
+  return NULL;
+}
+
+/* Plugin callback function for PLUGIN_ALL_IPA_PASSES_START event.  */
+
+void *
+vcg_plugin_callback_caller (void *gcc_data, void *user_data)
+{
+  vcg_plugin_dump_cgraph_caller ();
+  return NULL;
+}
+
 

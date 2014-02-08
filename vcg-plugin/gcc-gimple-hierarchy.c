@@ -112,3 +112,12 @@ vcg_plugin_view_gimple_hierarchy (void)
   vcg_plugin_common.finish ();
 }
 
+/* Plugin callback function for PLUGIN_FINISH event.  */
+
+void *
+vcg_plugin_callback_gimple_hierarchy (void *gcc_data, void *user_data)
+{
+  vcg_plugin_dump_gimple_hierarchy ();
+  return NULL;
+}
+

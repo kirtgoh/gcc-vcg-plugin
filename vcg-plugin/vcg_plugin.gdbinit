@@ -144,19 +144,19 @@ Usage: dump-loop [int LOOP_ID]
 Dump the graph of loop.
 end
 
-define view-passes
-  call vcg_plugin_view_passes ()
+define view-pass-lists
+  call vcg_plugin_view_pass_lists ()
 end
-document view-passes
-Usage: view-passes
+document view-pass_lists
+Usage: view-pass-lists
 View the graph of gcc pass lists. If current_pass exists, then show the it in red color.
 end
 
-define dump-passes
-  call vcg_plugin_dump_passes ()
+define dump-pass-lists
+  call vcg_plugin_dump_pass_lists ()
 end
-document dump-passes
-Usage: dump-passes
+document dump-pass-lists
+Usage: dump-pass-lists
 Dump the graph of gcc pass lists. If current_pass exists, then show the it in red color.
 end
 

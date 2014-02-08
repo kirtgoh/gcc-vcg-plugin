@@ -20,31 +20,27 @@
 /* plugin license check */
 int plugin_is_GPL_compatible;
 
-/* Just a wrapper.  */
-
-static void *
-dump_cgraph_callback (void *gcc_data, void *user_data)
+/* */
+static void
+help (void)
 {
-  vcg_plugin_dump_cgraph ();
-  return NULL;
-}
+  printf (
+"Usage: gcc -fplugin=/path/to/vcg_plugin.so -fplugin-arg-vcg_plugin-<option> ...\n" \
+"Options:\n" \
+"  cgraph               dump the call graph before IPA passes.\n" \
+"  cgraph-callee        dump the callee graph for each function.\n" \
+"  cgraph-caller        dump the caller graph for each function.\n" \
+"  gimple-hierarchy     dump the gimple hierarchy graph.\n" \
+"  help                 show this help.\n" \
+"  passes               dump the passes graph.\n" \
+"  pass-lists           dump the pass lists graph.\n" \
+"  tree-hierarchy       dump the tree hierarchy graph.\n" \
+"  viewer=name          set the vcg viewer, default is vcgview.\n" \
+"  \n" \
+"%s %s <http://code.google.com/p/gcc-vcg-plugin>\n",
+ vcg_plugin_common.plugin_name, vcg_plugin_common.version);
 
-/* Just a wrapper.  */
-
-static void *
-dump_cgraph_callee_callback (void *gcc_data, void *user_data)
-{
-  vcg_plugin_dump_cgraph_callee ();
-  return NULL;
-}
-
-/* Just a wrapper.  */
-
-static void *
-dump_cgraph_caller_callback (void *gcc_data, void *user_data)
-{
-  vcg_plugin_dump_cgraph_caller ();
-  return NULL;
+  exit (0);
 }
 
 /* Plugin initialization.  */
@@ -59,6 +55,10 @@ plugin_init (struct plugin_name_args *plugin_info,
 
   //if (!plugin_default_version_check (version, &gcc_version))
   //  return 1;
+
+  vcg_plugin_common.info = concat ("GCC: (GNU) ", version->basever,
+                                   " ", version->datestamp, " ",
+                                   "(", version->devphase, ")\n", NULL);
 
   /* Initialize the vcg plugin */
   for (i = 0; i < argc; i++)
@@ -77,7 +77,7 @@ plugin_init (struct plugin_name_args *plugin_info,
         {
           register_callback (plugin_info->base_name,
                              PLUGIN_ALL_IPA_PASSES_START,
-                             (plugin_callback_func) dump_cgraph_callback,
+                             (plugin_callback_func) vcg_plugin_callback_cgraph,
                              NULL);
         }
 
@@ -86,7 +86,7 @@ plugin_init (struct plugin_name_args *plugin_info,
         {
           register_callback (plugin_info->base_name,
                              PLUGIN_ALL_IPA_PASSES_START,
-                             (plugin_callback_func) dump_cgraph_callee_callback,
+                             (plugin_callback_func) vcg_plugin_callback_callee,
                              NULL);
         }
 
@@ -95,13 +95,59 @@ plugin_init (struct plugin_name_args *plugin_info,
         {
           register_callback (plugin_info->base_name,
                              PLUGIN_ALL_IPA_PASSES_START,
-                             (plugin_callback_func) dump_cgraph_caller_callback,
+                             (plugin_callback_func) vcg_plugin_callback_caller,
                              NULL);
         }
+
+      /* Dump passes.  */
+      if (strcmp (argv[i].key, "passes") == 0)
+        {
+          register_callback (plugin_info->base_name,
+                             PLUGIN_START_UNIT,
+            	             (plugin_callback_func) vcg_plugin_callback_passes_start,
+                             NULL);
+          register_callback (plugin_info->base_name,
+                             PLUGIN_OVERRIDE_GATE,
+                             (plugin_callback_func) vcg_plugin_callback_pass,
+                             NULL);
+          register_callback (plugin_info->base_name,
+                             PLUGIN_FINISH_UNIT,
+                             (plugin_callback_func) vcg_plugin_callback_passes_finish,
+                             NULL);
+        }
+
+      /* Dump gcc pass lists.  */
+      if (strcmp (argv[i].key, "pass-lists") == 0)
+        {
+          register_callback (plugin_info->base_name,
+                             PLUGIN_FINISH,
+                             (plugin_callback_func) vcg_plugin_callback_pass_lists,
+                             NULL);
+        }
+
+      /* Dump gimple hierarchy graph.  */
+      if (strcmp (argv[i].key, "gimple-hierarchy") == 0)
+        {
+          register_callback (plugin_info->base_name,
+                             PLUGIN_FINISH,
+                             (plugin_callback_func) vcg_plugin_callback_gimple_hierarchy,
+                             NULL);
+        }
+
+      /* Dump tree hierarchy graph.  */
+      if (strcmp (argv[i].key, "tree-hierarchy") == 0)
+        {
+          register_callback (plugin_info->base_name,
+                             PLUGIN_FINISH,
+                             (plugin_callback_func) vcg_plugin_callback_tree_hierarchy,
+                             NULL);
+        }
+
+      if (strcmp (argv[i].key, "help") == 0)
+        {
+          help (); 
+        }
     }
-  vcg_plugin_common.info = concat ("GCC: (GNU) ", version->basever,
-                                   " ", version->datestamp, " ",
-                                   "(", version->devphase, ")\n", NULL);
   
   return 0;
 }

@@ -26,10 +26,14 @@ static char *pass_list_name[] =
 };
 #undef DEF_PASS_LIST
 
-static int id = 0;
+/* Use the unique id number to avoid the same pass names.  */
+static int id;
 
 /* Point to the focused pass.  */
-static gdl_node *this_node = NULL;
+static gdl_node *this_node;
+
+/* The previous gdl node.  */
+static gdl_node *prev_node;
 
 static void
 check_current_pass (struct opt_pass *pass, gdl_node *node)
@@ -37,6 +41,8 @@ check_current_pass (struct opt_pass *pass, gdl_node *node)
   if (pass == current_pass)
     this_node = node;
 }
+
+/* Try to create a gdl edge.  */
 
 static void
 try_create_edge (gdl_graph *graph, gdl_node *src, gdl_node *dest)
@@ -48,29 +54,68 @@ try_create_edge (gdl_graph *graph, gdl_node *src, gdl_node *dest)
                       gdl_get_node_title (dest));
 } 
 
+/* Get the label name based on PASS.  It's juat the pass name.  */
+
+static char *
+get_label (struct opt_pass *pass)
+{
+  return (char *) pass->name;
+}
+
+/* Get the title name based on PASS.  Use the unique id number to avoid the
+   same pass names.  */
+
+static char *
+get_title (struct opt_pass *pass, char *suffix)
+{
+  static char buf[1024];
+
+  if (suffix)
+    sprintf (buf, "%d. %s [%s] %s", ++id, pass->name,
+             current_function_name (), suffix);
+  else
+    sprintf (buf, "%d. %s [%s]", ++id, pass->name,
+             current_function_name ());
+
+  return buf;
+}
+
+/* Create a gdl node based on PASS.  */
+
+static gdl_node *
+create_node (gdl_graph *graph, struct opt_pass *pass, char *suffix)
+{
+  char *title;
+  gdl_node *node;
+
+  title = get_title (pass, suffix);
+  node = gdl_new_graph_node (graph, title);
+
+  return node;
+}
+
 static gdl_node *
 create_sub_pass_list_graph (gdl_graph *graph, struct opt_pass *pass_list,
-                            char *name, gdl_node *prev_node)
+                            gdl_node *prev_node)
 {
   gdl_graph *subgraph;
   gdl_node *node = NULL, *prev = prev_node;
-  char *title;
+  char *title, *label;
   struct opt_pass *pass = pass_list;
 
-  asprintf (&title, "%s.%d", name, id++);
+  label = get_label (pass);
+  title = get_title (pass, NULL);
   subgraph = gdl_new_graph (title);
-  gdl_set_graph_label (subgraph, name);
+  gdl_set_graph_label (subgraph, label);
   gdl_set_graph_folding (subgraph, 1);
   gdl_set_graph_shape (subgraph, "ellipse");
   gdl_add_subgraph (graph, subgraph);
 
   if (pass->execute)
     {
-      asprintf (&title, "%s.%d", name, id++);
-      node = gdl_new_node (title);
+      node = create_node (subgraph, pass, NULL);
+      gdl_set_node_label (node, label);
       check_current_pass (pass, node);
-      gdl_set_node_label (node, name);
-      gdl_add_node (subgraph, node);
       try_create_edge (subgraph, prev, node);
       prev = node;
     }
@@ -78,15 +123,13 @@ create_sub_pass_list_graph (gdl_graph *graph, struct opt_pass *pass_list,
   for (pass = pass->sub; pass; pass = pass->next)
     {
       if (pass->sub)
-        prev = create_sub_pass_list_graph (subgraph, pass,
-                                           (char *) pass->name, prev);
+        prev = create_sub_pass_list_graph (subgraph, pass, prev);
       else
         {
-          asprintf (&title, "%s.%d", pass->name, id++);
-          node = gdl_new_node (title);
-          gdl_set_node_label (node, (char *) pass->name);
+          node = create_node (subgraph, pass, NULL);
+          label = get_label (pass);
+          gdl_set_node_label (node, label);
           check_current_pass (pass, node);
-          gdl_add_node (subgraph, node);
           try_create_edge (subgraph, prev, node);
           prev = node;
         }
@@ -100,8 +143,8 @@ create_pass_list_graph (gdl_graph *graph, struct opt_pass *pass_list,
 {
   gdl_graph *subgraph;
   gdl_node *node = NULL, *prev = prev_node;
-  char *title;
   struct opt_pass *pass;
+  char *label;
 
   subgraph = gdl_new_graph (name);
   gdl_set_graph_label (subgraph, name);
@@ -112,15 +155,13 @@ create_pass_list_graph (gdl_graph *graph, struct opt_pass *pass_list,
   for (pass = pass_list; pass; pass = pass->next)
     {
       if (pass->sub)
-        prev = create_sub_pass_list_graph (subgraph, pass,
-                                           (char *) pass->name, prev);
+        prev = create_sub_pass_list_graph (subgraph, pass, prev);
       else
         {
-          asprintf (&title, "%s.%d", pass->name, id++);
-          node = gdl_new_node (title);
-          gdl_set_node_label (node, (char *) pass->name);
+          label = get_label (pass);
+          node = create_node (subgraph, pass, NULL);
+          gdl_set_node_label (node, label);
           check_current_pass (pass, node);
-          gdl_add_node (subgraph, node);
           try_create_edge (subgraph, prev, node);
           prev = node;
         }
@@ -157,22 +198,22 @@ dump_passes_to_file (char *fname)
   vcg_plugin_common.dump (fname);
 }
 
-/* Public function to dump the gcc passes.  */
+/* Public function to dump the gcc pass lists.  */
 
 void
-vcg_plugin_dump_passes (void)
+vcg_plugin_dump_pass_lists (void)
 {
   vcg_plugin_common.init ();
 
-  dump_passes_to_file ("dump-passes.vcg");
+  dump_passes_to_file ("dump-pass-lists.vcg");
 
   vcg_plugin_common.finish ();
 }
 
-/* Public function to view the gcc passes.  */
+/* Public function to view the gcc pass lists.  */
 
 void
-vcg_plugin_view_passes (void)
+vcg_plugin_view_pass_lists (void)
 {
   vcg_plugin_common.init ();
 
@@ -180,5 +221,72 @@ vcg_plugin_view_passes (void)
   vcg_plugin_common.show (vcg_plugin_common.temp_file_name);
 
   vcg_plugin_common.finish ();
+}
+
+/* Plugin callback function for PLUGIN_FINISH event.
+   Dump gcc pass lists.  */
+
+void *
+vcg_plugin_callback_pass_lists (void *gcc_data, void *user_data)
+{
+  vcg_plugin_dump_pass_lists ();
+  return NULL;
+}
+
+/* Plugin callback function for PLUGIN_START_UNIT event.
+   Dump the pass list.  */
+
+void *
+vcg_plugin_callback_passes_start (void *gcc_data, void *user_data)
+{
+  /* Do some initialization.  */
+  id = 0;
+  this_node = NULL;
+  prev_node = NULL;
+
+  vcg_plugin_common.init ();
+  return NULL;
+}
+
+/* Plugin callback function for PLUGIN_OVERRIDE_GATE event.  Create a node for
+   the current pass, and set node color as green if the gate status value is
+   true, grey for false.  */
+
+void *
+vcg_plugin_callback_pass (void *gcc_data, void *user_data)
+{
+  gdl_graph *graph;
+  gdl_node *node;
+
+  graph = vcg_plugin_common.top_graph;
+  if (*(bool *)gcc_data)
+    {
+      node = create_node (graph, current_pass, "[enable]");
+    }
+  else
+    {
+      node = create_node (graph, current_pass, "[disable]");
+      gdl_set_node_color (node, "lightgrey");
+    }
+
+  try_create_edge (graph, prev_node, node);
+  prev_node = node;
+  return NULL;
+}
+
+/* Plugin callback function for PLUGIN_FINISH_UNIT event.
+   Dump the pass list.  */
+
+void *
+vcg_plugin_callback_passes_finish (void *gcc_data, void *user_data)
+{
+  char *fname;
+
+  fname = concat (dump_base_name, ".passes.vcg", NULL);
+  vcg_plugin_common.dump (fname);
+  free (fname);
+
+  vcg_plugin_common.finish ();
+  return NULL;
 }
 

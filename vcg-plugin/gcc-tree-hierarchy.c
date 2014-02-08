@@ -132,3 +132,12 @@ vcg_plugin_view_tree_hierarchy (void)
   vcg_plugin_common.finish ();
 }
 
+/* Plugin callback function for PLUGIN_FINISH event.  */
+
+void *
+vcg_plugin_callback_tree_hierarchy (void *gcc_data, void *user_data)
+{
+  vcg_plugin_dump_tree_hierarchy ();
+  return NULL;
+}
+

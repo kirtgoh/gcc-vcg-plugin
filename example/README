@@ -16,3 +16,15 @@ $ gdb -q -args /path/to/cc1 -O3 -fplugin=/path/to/vcg-plugin.so foo.c
 (gdb) dump-tree current_function_decl 
 (gdb) dump-cgraph 
 (gdb) dump-passes
+
+Here is the example of using vcg plugin without gdb.
+
+$ export VCGPLUGIN=/path/to/vcg-plugin.so
+$ gcc -fplugin=$VCGPLUGIN -fplugin-arg-vcg_plugin-cgraph -c foo.c
+$ gcc -fplugin=$VCGPLUGIN -fplugin-arg-vcg_plugin-cgraph-callee -c foo.c
+$ gcc -fplugin=$VCGPLUGIN -fplugin-arg-vcg_plugin-cgraph-caller -c foo.c
+$ gcc -fplugin=$VCGPLUGIN -fplugin-arg-vcg_plugin-gimple-hierarchy -c foo.c
+$ gcc -fplugin=$VCGPLUGIN -fplugin-arg-vcg_plugin-passes -c foo.c
+$ gcc -fplugin=$VCGPLUGIN -fplugin-arg-vcg_plugin-pass-lists -c foo.c
+$ gcc -fplugin=$VCGPLUGIN -fplugin-arg-vcg_plugin-tree-hierarchy -c foo.c
+
