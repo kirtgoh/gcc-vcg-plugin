@@ -35,7 +35,7 @@ vcg_plugin_la_SOURCES = \
 	gcc-passes.c \
 	gcc-plugin-api.c \
 	gcc-rtx.c \
-	gcc-tree.c \
+	gcc-tree-4.6.c gcc-tree-4.7.c \
 	gcc-tree-hierarchy.c \
         vcg-plugin.c vcg-plugin.h
 

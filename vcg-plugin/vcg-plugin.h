@@ -33,11 +33,13 @@
 #include "plugin.h"
 #include "plugin-version.h"
 
+#include "tree.h"
 #include "gimple.h"
 #include "tree-flow.h"
 #include "tree-pass.h"
 #include "cfgloop.h"
 #include "cgraph.h"
+#include "options.h"
 
 /* Check gcc version.  */
 

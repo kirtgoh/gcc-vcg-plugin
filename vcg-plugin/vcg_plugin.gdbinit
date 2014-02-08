@@ -192,6 +192,22 @@ Usage: dump-tree [tree TREE]
 Dump the graph of TREE.
 end
 
+define view-tree-node
+  call vcg_plugin_view_tree_node ($arg0)
+end
+document view-tree-node
+Usage: view-tree-node [tree TREE]
+View the graph of TREE.
+end
+
+define dump-tree-node
+  call vcg_plugin_dump_tree_node ($arg0)
+end
+document dump-tree-node
+Usage: dump-tree-node [tree TREE]
+Dump the graph of TREE.
+end
+
 define view-tree-hierarchy
   call vcg_plugin_view_tree_hierarchy ()
 end

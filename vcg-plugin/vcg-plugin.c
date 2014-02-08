@@ -139,7 +139,7 @@ vcg_plugin_common_t vcg_plugin_common =
   /* The plugin name.  */
   "VCG Plugin",
   /* The plugin version.  */
-  "1.7",
+  "1.8",
   /* The gcc base version.  */
   NULL,
   /* Other information.  */
